@@ -1,10 +1,13 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dashboard KPI — Logística | Norte Tech</title>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
   <style>
     /* ============================================================
        DESIGN SYSTEM — NORTE TECH LOGÍSTICA KPI DASHBOARD
@@ -12,28 +15,75 @@
        Paleta: Azul industrial profundo + laranja energia + dark slate
     ============================================================ */
     :root {
-      --nt-navy:       #0a1628;
-      --nt-navy-mid:   #112040;
-      --nt-navy-card:  #162a50;
-      --nt-blue:       #1a56db;
+      --nt-navy: #0a1628;
+      --nt-navy-mid: #112040;
+      --nt-navy-card: #162a50;
+      --nt-blue: #1a56db;
       --nt-blue-light: #3b82f6;
-      --nt-orange:     #E4C62A;
+      --nt-orange: #E4C62A;
       --nt-orange-dim: #ea580c;
-      --nt-teal:       #14b8a6;
-      --nt-green:      #22c55e;
-      --nt-red:        #ef4444;
-      --nt-yellow:     #eab308;
-      --nt-white:      #f0f6ff;
-      --nt-muted:      #8da5c6;
-      --nt-border:     rgba(59,130,246,0.18);
-      --nt-glow:       rgba(26,86,219,0.25);
-      --nt-radius:     10px;
-      --nt-radius-lg:  16px;
-      --font-main:     'Sora', sans-serif;
-      --font-mono:     'JetBrains Mono', monospace;
+      --nt-teal: #14b8a6;
+      --nt-green: #22c55e;
+      --nt-red: #ef4444;
+      --nt-yellow: #eab308;
+      --nt-white: #f0f6ff;
+      --nt-muted: #8da5c6;
+      --nt-border: rgba(59, 130, 246, 0.18);
+      --nt-glow: rgba(26, 86, 219, 0.25);
+      --nt-radius: 10px;
+      --nt-radius-lg: 16px;
+      --font-main: 'Sora', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body.light-theme {
+      --nt-navy: #f4f7fb;
+      --nt-navy-mid: #ffffff;
+      --nt-navy-card: #ffffff;
+      --nt-blue: #1a56db;
+      --nt-blue-light: #2563eb;
+      --nt-orange: #b89600;
+      --nt-orange-dim: #c2410c;
+      --nt-teal: #0f766e;
+      --nt-green: #15803d;
+      --nt-red: #dc2626;
+      --nt-yellow: #ca8a04;
+      --nt-white: #102033;
+      --nt-muted: #5f7089;
+      --nt-border: rgba(26, 86, 219, 0.16);
+      --nt-glow: rgba(26, 86, 219, 0.12);
+    }
+
+    body.light-theme thead th,
+    body.light-theme .month-tab {
+      background: rgba(26, 86, 219, 0.06);
+    }
+
+    body.light-theme tbody tr {
+      border-bottom-color: rgba(10, 22, 40, 0.08);
+    }
+
+    body.light-theme tbody tr:hover,
+    body.light-theme .sidebar-nav-item:hover {
+      background: rgba(26, 86, 219, 0.08);
+    }
+
+    body.light-theme .progress-bar-bg,
+    body.light-theme .ec-bar-wrap {
+      background: rgba(10, 22, 40, 0.1);
+    }
+
+    body.light-theme .modal-criteria {
+      background: rgba(26, 86, 219, 0.04);
+    }
+
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: var(--font-main);
@@ -45,237 +95,440 @@
 
     /* ---- LOADING SCREEN ---- */
     #loading-screen {
-      position: fixed; inset: 0;
+      position: fixed;
+      inset: 0;
       background: var(--nt-navy);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
       z-index: 9999;
       transition: opacity 0.6s;
     }
-    #loading-screen.fade-out { opacity: 0; pointer-events: none; }
+
+    #loading-screen.fade-out {
+      opacity: 0;
+      pointer-events: none;
+    }
+
     .loader-logo {
-      font-size: 2.2rem; font-weight: 800; letter-spacing: -0.02em;
-      color: var(--nt-white); margin-bottom: 8px;
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: var(--nt-white);
+      margin-bottom: 8px;
     }
-    .loader-logo span { color: var(--nt-orange); }
-    .loader-sub { color: var(--nt-muted); font-size: 0.85rem; margin-bottom: 32px; }
+
+    .loader-logo span {
+      color: var(--nt-orange);
+    }
+
+    .loader-sub {
+      color: var(--nt-muted);
+      font-size: 0.85rem;
+      margin-bottom: 32px;
+    }
+
     .loader-bar-wrap {
-      width: 220px; height: 3px; background: rgba(255,255,255,0.1);
-      border-radius: 99px; overflow: hidden;
+      width: 220px;
+      height: 3px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 99px;
+      overflow: hidden;
     }
+
     .loader-bar {
-      height: 100%; width: 0%;
+      height: 100%;
+      width: 0%;
       background: linear-gradient(90deg, var(--nt-blue), var(--nt-orange));
       border-radius: 99px;
       animation: loaderFill 1.8s ease-in-out forwards;
     }
-    @keyframes loaderFill { to { width: 100%; } }
+
+    @keyframes loaderFill {
+      to {
+        width: 100%;
+      }
+    }
 
     /* ---- HEADER ---- */
     header {
       background: var(--nt-navy-mid);
       border-bottom: 1px solid var(--nt-border);
       padding: 0 28px;
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       height: 64px;
-      position: sticky; top: 0; z-index: 100;
+      position: sticky;
+      top: 0;
+      z-index: 100;
       backdrop-filter: blur(8px);
     }
+
     .header-brand {
-      display: flex; align-items: center; gap: 12px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
+
     .brand-icon {
-      width: 36px; height: 36px; border-radius: 8px;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
       background: linear-gradient(135deg, var(--nt-blue), var(--nt-orange));
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 1rem; color: #fff; letter-spacing: -1px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+      color: #fff;
+      letter-spacing: -1px;
     }
-    .brand-text { font-size: 1.1rem; font-weight: 700; }
-    .brand-text span { color: var(--nt-orange); }
-    .brand-sub { font-size: 0.7rem; color: var(--nt-muted); font-weight: 400; margin-top: -2px; }
+
+    .brand-text {
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .brand-text span {
+      color: var(--nt-orange);
+    }
+
+    .brand-sub {
+      font-size: 0.7rem;
+      color: var(--nt-muted);
+      font-weight: 400;
+      margin-top: -2px;
+    }
+
     .header-right {
-      display: flex; align-items: center; gap: 16px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
     }
+
     .header-period-badge {
-      background: rgba(26,86,219,0.2);
+      background: rgba(26, 86, 219, 0.2);
       border: 1px solid var(--nt-border);
       color: var(--nt-blue-light);
-      font-size: 0.75rem; font-weight: 600;
-      padding: 5px 12px; border-radius: 6px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 6px;
       font-family: var(--font-mono);
     }
-    .header-refresh-btn {
-      background: none; border: 1px solid var(--nt-border);
-      color: var(--nt-muted); border-radius: 7px;
-      padding: 6px 14px; cursor: pointer; font-size: 0.78rem;
-      font-family: var(--font-main); font-weight: 500;
-      display: flex; align-items: center; gap: 6px;
+
+    .header-refresh-btn,
+    .header-theme-btn {
+      background: none;
+      border: 1px solid var(--nt-border);
+      color: var(--nt-muted);
+      border-radius: 7px;
+      padding: 6px 14px;
+      cursor: pointer;
+      font-size: 0.78rem;
+      font-family: var(--font-main);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 6px;
       transition: all 0.2s;
     }
-    .header-refresh-btn:hover {
-      background: rgba(26,86,219,0.15); color: var(--nt-white);
+
+    .header-refresh-btn:hover,
+    .header-theme-btn:hover {
+      background: rgba(26, 86, 219, 0.15);
+      color: var(--nt-white);
       border-color: var(--nt-blue-light);
     }
-    .refresh-icon { font-size: 0.9rem; }
+
+    .refresh-icon,
+    .theme-icon {
+      font-size: 0.9rem;
+    }
+
+    .header-theme-btn {
+      min-width: 138px;
+      justify-content: center;
+    }
 
     /* ---- LAYOUT ---- */
     .layout {
-      display: flex; min-height: calc(100vh - 64px);
+      display: flex;
+      min-height: calc(100vh - 64px);
     }
 
     /* ---- SIDEBAR ---- */
     .sidebar {
-      width: 220px; min-width: 220px;
+      width: 220px;
+      min-width: 220px;
       background: var(--nt-navy-mid);
       border-right: 1px solid var(--nt-border);
       padding: 20px 0;
-      display: flex; flex-direction: column;
+      display: flex;
+      flex-direction: column;
     }
+
     .sidebar-section-title {
-      font-size: 0.65rem; font-weight: 700;
-      color: var(--nt-muted); letter-spacing: 0.12em;
+      font-size: 0.65rem;
+      font-weight: 700;
+      color: var(--nt-muted);
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      padding: 0 18px; margin: 16px 0 6px;
+      padding: 0 18px;
+      margin: 16px 0 6px;
     }
+
     .sidebar-nav-item {
-      display: flex; align-items: center; gap: 10px;
-      padding: 9px 18px; cursor: pointer;
-      font-size: 0.82rem; font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 9px 18px;
+      cursor: pointer;
+      font-size: 0.82rem;
+      font-weight: 500;
       color: var(--nt-muted);
       border-left: 3px solid transparent;
       transition: all 0.18s;
     }
+
     .sidebar-nav-item:hover {
-      background: rgba(26,86,219,0.12);
+      background: rgba(26, 86, 219, 0.12);
       color: var(--nt-white);
     }
+
     .sidebar-nav-item.active {
-      background: rgba(26,86,219,0.18);
+      background: rgba(26, 86, 219, 0.18);
       color: var(--nt-white);
       border-left-color: var(--nt-orange);
     }
-    .sidebar-nav-icon { font-size: 1rem; width: 18px; text-align: center; }
+
+    .sidebar-nav-icon {
+      font-size: 1rem;
+      width: 18px;
+      text-align: center;
+    }
+
     .nav-badge {
       margin-left: auto;
-      background: rgba(249,115,22,0.25);
+      background: rgba(249, 115, 22, 0.25);
       color: var(--nt-orange);
-      font-size: 0.65rem; font-weight: 700;
-      padding: 1px 7px; border-radius: 99px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 1px 7px;
+      border-radius: 99px;
       font-family: var(--font-mono);
     }
 
     /* ---- MAIN CONTENT ---- */
     .main-content {
-      flex: 1; overflow-y: auto;
+      flex: 1;
+      overflow-y: auto;
       padding: 24px 28px;
     }
 
     /* ---- VIEW PANELS ---- */
-    .view { display: none; }
-    .view.active { display: block; animation: fadeIn 0.3s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+    .view {
+      display: none;
+    }
+
+    .view.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
+    }
 
     /* ---- PAGE TITLE ---- */
     .page-title-row {
-      display: flex; align-items: flex-end; justify-content: space-between;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
       margin-bottom: 22px;
     }
+
     .page-title {
-      font-size: 1.6rem; font-weight: 800; letter-spacing: -0.03em;
+      font-size: 1.6rem;
+      font-weight: 800;
+      letter-spacing: -0.03em;
       line-height: 1;
     }
-    .page-title span { color: var(--nt-orange); }
-    .page-subtitle { font-size: 0.8rem; color: var(--nt-muted); margin-top: 4px; font-weight: 400; }
+
+    .page-title span {
+      color: var(--nt-orange);
+    }
+
+    .page-subtitle {
+      font-size: 0.8rem;
+      color: var(--nt-muted);
+      margin-top: 4px;
+      font-weight: 400;
+    }
 
     /* ---- MONTH SELECTOR ---- */
     .month-tabs {
-      display: flex; gap: 6px; flex-wrap: wrap;
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
       margin-bottom: 22px;
     }
+
     .month-tab {
-      padding: 6px 14px; border-radius: 7px;
-      background: rgba(255,255,255,0.05);
+      padding: 6px 14px;
+      border-radius: 7px;
+      background: rgba(255, 255, 255, 0.05);
       border: 1px solid var(--nt-border);
-      color: var(--nt-muted); font-size: 0.75rem; font-weight: 600;
-      cursor: pointer; transition: all 0.15s;
+      color: var(--nt-muted);
+      font-size: 0.75rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
       font-family: var(--font-main);
     }
+
     .month-tab:hover {
-      background: rgba(26,86,219,0.15); color: var(--nt-white);
+      background: rgba(26, 86, 219, 0.15);
+      color: var(--nt-white);
     }
+
     .month-tab.active {
-      background: var(--nt-blue); color: #fff;
+      background: var(--nt-blue);
+      color: #fff;
       border-color: var(--nt-blue);
     }
+
     .month-tab.no-data {
-      opacity: 0.35; cursor: default;
+      opacity: 0.35;
+      cursor: default;
     }
 
     /* ---- SUMMARY CARDS ---- */
     .summary-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
-      gap: 14px; margin-bottom: 26px;
+      gap: 14px;
+      margin-bottom: 26px;
     }
+
     .summary-card {
       background: var(--nt-navy-card);
       border: 1px solid var(--nt-border);
       border-radius: var(--nt-radius-lg);
       padding: 18px 20px;
-      position: relative; overflow: hidden;
+      position: relative;
+      overflow: hidden;
       transition: transform 0.2s, box-shadow 0.2s;
     }
+
     .summary-card:hover {
       transform: translateY(-2px);
       box-shadow: 0 8px 32px var(--nt-glow);
     }
+
     .summary-card::before {
       content: '';
-      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
       background: linear-gradient(90deg, var(--card-accent, var(--nt-blue)), transparent);
     }
-    .summary-card.accent-orange { --card-accent: var(--nt-orange); }
-    .summary-card.accent-green  { --card-accent: var(--nt-green);  }
-    .summary-card.accent-red    { --card-accent: var(--nt-red);    }
-    .summary-card.accent-teal   { --card-accent: var(--nt-teal);   }
-    .summary-card.accent-yellow { --card-accent: var(--nt-yellow); }
+
+    .summary-card.accent-orange {
+      --card-accent: var(--nt-orange);
+    }
+
+    .summary-card.accent-green {
+      --card-accent: var(--nt-green);
+    }
+
+    .summary-card.accent-red {
+      --card-accent: var(--nt-red);
+    }
+
+    .summary-card.accent-teal {
+      --card-accent: var(--nt-teal);
+    }
+
+    .summary-card.accent-yellow {
+      --card-accent: var(--nt-yellow);
+    }
 
     .sc-label {
-      font-size: 0.7rem; font-weight: 600; text-transform: uppercase;
-      letter-spacing: 0.1em; color: var(--nt-muted); margin-bottom: 10px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--nt-muted);
+      margin-bottom: 10px;
     }
+
     .sc-value {
-      font-size: 2rem; font-weight: 800; letter-spacing: -0.04em;
-      line-height: 1; font-family: var(--font-mono);
+      font-size: 2rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      font-family: var(--font-mono);
     }
+
     .sc-meta {
-      font-size: 0.72rem; color: var(--nt-muted); margin-top: 6px;
+      font-size: 0.72rem;
+      color: var(--nt-muted);
+      margin-top: 6px;
     }
+
     .sc-icon {
-      position: absolute; right: 16px; top: 50%;
+      position: absolute;
+      right: 16px;
+      top: 50%;
       transform: translateY(-50%);
-      font-size: 2rem; opacity: 0.1;
+      font-size: 2rem;
+      opacity: 0.1;
     }
 
     /* ---- EMPLOYEE FILTER ---- */
     .filter-bar {
-      display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
       margin-bottom: 20px;
     }
+
     .filter-label {
-      font-size: 0.75rem; color: var(--nt-muted); font-weight: 600;
+      font-size: 0.75rem;
+      color: var(--nt-muted);
+      font-weight: 600;
     }
+
     .filter-select {
       background: var(--nt-navy-card);
       border: 1px solid var(--nt-border);
       color: var(--nt-white);
       font-family: var(--font-main);
       font-size: 0.8rem;
-      padding: 7px 14px; border-radius: 7px;
-      cursor: pointer; outline: none;
+      padding: 7px 14px;
+      border-radius: 7px;
+      cursor: pointer;
+      outline: none;
       min-width: 220px;
     }
-    .filter-select:focus { border-color: var(--nt-blue-light); }
+
+    .filter-select:focus {
+      border-color: var(--nt-blue-light);
+    }
 
     /* ---- KPI TABLE ---- */
     .table-wrap {
@@ -284,87 +537,166 @@
       border-radius: var(--nt-radius-lg);
       overflow: hidden;
     }
+
     .table-header-bar {
       padding: 14px 20px;
-      display: flex; align-items: center; justify-content: space-between;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       border-bottom: 1px solid var(--nt-border);
     }
+
     .table-title {
-      font-size: 0.85rem; font-weight: 700; color: var(--nt-white);
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--nt-white);
     }
+
     .table-count {
-      font-size: 0.72rem; color: var(--nt-muted);
+      font-size: 0.72rem;
+      color: var(--nt-muted);
       font-family: var(--font-mono);
     }
+
     table {
-      width: 100%; border-collapse: collapse;
+      width: 100%;
+      border-collapse: collapse;
     }
+
     thead th {
-      background: rgba(255,255,255,0.03);
-      font-size: 0.65rem; font-weight: 700;
-      text-transform: uppercase; letter-spacing: 0.1em;
+      background: rgba(255, 255, 255, 0.03);
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
       color: var(--nt-muted);
       padding: 10px 14px;
       text-align: left;
       border-bottom: 1px solid var(--nt-border);
       white-space: nowrap;
     }
+
     tbody tr {
-      border-bottom: 1px solid rgba(255,255,255,0.04);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
       transition: background 0.15s;
     }
-    tbody tr:last-child { border-bottom: none; }
-    tbody tr:hover { background: rgba(26,86,219,0.07); }
+
+    tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    tbody tr:hover {
+      background: rgba(26, 86, 219, 0.07);
+    }
+
     tbody td {
       padding: 11px 14px;
-      font-size: 0.78rem; color: var(--nt-white);
+      font-size: 0.78rem;
+      color: var(--nt-white);
       vertical-align: middle;
     }
-    td.muted { color: var(--nt-muted); font-size: 0.72rem; }
-    td.mono { font-family: var(--font-mono); font-size: 0.78rem; }
+
+    td.muted {
+      color: var(--nt-muted);
+      font-size: 0.72rem;
+    }
+
+    td.mono {
+      font-family: var(--font-mono);
+      font-size: 0.78rem;
+    }
 
     /* ---- PROGRESS BAR ---- */
-    .progress-cell { min-width: 120px; }
+    .progress-cell {
+      min-width: 120px;
+    }
+
     .progress-wrap {
-      display: flex; align-items: center; gap: 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
+
     .progress-bar-bg {
-      flex: 1; height: 5px; background: rgba(255,255,255,0.08);
-      border-radius: 99px; overflow: hidden;
+      flex: 1;
+      height: 5px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      overflow: hidden;
     }
+
     .progress-bar-fill {
-      height: 100%; border-radius: 99px;
-      transition: width 0.8s cubic-bezier(0.34,1.56,0.64,1);
+      height: 100%;
+      border-radius: 99px;
+      transition: width 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
+
     .progress-label {
-      font-size: 0.7rem; font-family: var(--font-mono);
-      font-weight: 600; min-width: 38px; text-align: right;
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      font-weight: 600;
+      min-width: 38px;
+      text-align: right;
     }
 
     /* ---- STATUS BADGES ---- */
     .badge {
-      display: inline-flex; align-items: center; gap: 4px;
-      font-size: 0.65rem; font-weight: 700;
-      padding: 3px 9px; border-radius: 99px;
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 99px;
       white-space: nowrap;
       font-family: var(--font-mono);
     }
-    .badge-on-track  { background: rgba(34,197,94,0.15); color: var(--nt-green);  }
-    .badge-at-risk   { background: rgba(234,179,8,0.15);  color: var(--nt-yellow); }
-    .badge-off-track { background: rgba(239,68,68,0.15);  color: var(--nt-red);   }
-    .badge-no-data   { background: rgba(255,255,255,0.07); color: var(--nt-muted); }
-    .badge-dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; }
+
+    .badge-on-track {
+      background: rgba(34, 197, 94, 0.15);
+      color: var(--nt-green);
+    }
+
+    .badge-at-risk {
+      background: rgba(234, 179, 8, 0.15);
+      color: var(--nt-yellow);
+    }
+
+    .badge-off-track {
+      background: rgba(239, 68, 68, 0.15);
+      color: var(--nt-red);
+    }
+
+    .badge-no-data {
+      background: rgba(255, 255, 255, 0.07);
+      color: var(--nt-muted);
+    }
+
+    .badge-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: currentColor;
+    }
 
     /* ---- TREND INDICATOR ---- */
-    .trend { font-size: 0.9rem; }
+    .trend {
+      font-size: 0.9rem;
+    }
 
     /* ---- MONTHLY TREND CHART (inline sparkline) ---- */
     .sparkline-wrap {
-      display: flex; align-items: flex-end; gap: 2px; height: 28px;
+      display: flex;
+      align-items: flex-end;
+      gap: 2px;
+      height: 28px;
     }
+
     .spark-bar {
-      flex: 1; border-radius: 2px 2px 0 0;
-      max-width: 10px; min-width: 5px;
+      flex: 1;
+      border-radius: 2px 2px 0 0;
+      max-width: 10px;
+      min-width: 5px;
       transition: height 0.4s ease;
     }
 
@@ -372,8 +704,10 @@
     .employee-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 16px; margin-bottom: 24px;
+      gap: 16px;
+      margin-bottom: 24px;
     }
+
     .employee-card {
       background: var(--nt-navy-card);
       border: 1px solid var(--nt-border);
@@ -381,47 +715,88 @@
       padding: 20px;
       cursor: pointer;
       transition: all 0.2s;
-      position: relative; overflow: hidden;
+      position: relative;
+      overflow: hidden;
     }
+
     .employee-card:hover {
       border-color: var(--nt-blue-light);
       box-shadow: 0 4px 24px var(--nt-glow);
       transform: translateY(-2px);
     }
+
     .employee-card.selected {
       border-color: var(--nt-orange);
-      background: rgba(249,115,22,0.06);
+      background: rgba(249, 115, 22, 0.06);
     }
+
     .ec-avatar {
-      width: 44px; height: 44px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-weight: 800; font-size: 1.1rem;
-      color: #fff; margin-bottom: 12px;
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 12px;
       flex-shrink: 0;
     }
-    .ec-header { display: flex; gap: 12px; align-items: center; margin-bottom: 14px; }
-    .ec-info { flex: 1; min-width: 0; }
+
+    .ec-header {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 14px;
+    }
+
+    .ec-info {
+      flex: 1;
+      min-width: 0;
+    }
+
     .ec-name {
-      font-size: 0.88rem; font-weight: 700;
-      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+      font-size: 0.88rem;
+      font-weight: 700;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
+
     .ec-id {
-      font-size: 0.68rem; color: var(--nt-muted); font-family: var(--font-mono);
+      font-size: 0.68rem;
+      color: var(--nt-muted);
+      font-family: var(--font-mono);
     }
+
     .ec-kpi-row {
-      display: flex; justify-content: space-between;
-      font-size: 0.72rem; color: var(--nt-muted); margin-bottom: 8px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.72rem;
+      color: var(--nt-muted);
+      margin-bottom: 8px;
     }
+
     .ec-progress-big {
-      font-size: 1.6rem; font-weight: 800; font-family: var(--font-mono);
-      letter-spacing: -0.04em; margin-bottom: 2px;
+      font-size: 1.6rem;
+      font-weight: 800;
+      font-family: var(--font-mono);
+      letter-spacing: -0.04em;
+      margin-bottom: 2px;
     }
+
     .ec-bar-wrap {
-      height: 4px; background: rgba(255,255,255,0.08);
-      border-radius: 99px; overflow: hidden; margin-top: 4px;
+      height: 4px;
+      background: rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 4px;
     }
+
     .ec-bar-fill {
-      height: 100%; border-radius: 99px;
+      height: 100%;
+      border-radius: 99px;
     }
 
     /* ---- ACUMULADO VIEW ---- */
@@ -430,599 +805,772 @@
       grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
       gap: 16px;
     }
+
     .acum-card {
       background: var(--nt-navy-card);
       border: 1px solid var(--nt-border);
       border-radius: var(--nt-radius-lg);
       padding: 18px 20px;
     }
+
     .acum-kpi-name {
-      font-size: 0.78rem; font-weight: 600;
-      color: var(--nt-white); margin-bottom: 14px;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--nt-white);
+      margin-bottom: 14px;
       line-height: 1.4;
     }
+
     .acum-months {
-      display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px;
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 6px;
     }
+
     .acum-month-cell {
       text-align: center;
     }
+
     .acum-month-label {
-      font-size: 0.55rem; color: var(--nt-muted); font-weight: 600;
-      text-transform: uppercase; margin-bottom: 4px;
+      font-size: 0.55rem;
+      color: var(--nt-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      margin-bottom: 4px;
     }
+
     .acum-month-dot {
-      width: 24px; height: 24px; border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
       margin: 0 auto 2px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 0.6rem; font-weight: 700; font-family: var(--font-mono);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.6rem;
+      font-weight: 700;
+      font-family: var(--font-mono);
     }
-    .acum-month-dot.good { background: rgba(34,197,94,0.2); color: var(--nt-green); }
-    .acum-month-dot.warn { background: rgba(234,179,8,0.2); color: var(--nt-yellow); }
-    .acum-month-dot.bad  { background: rgba(239,68,68,0.2); color: var(--nt-red); }
-    .acum-month-dot.empty{ background: rgba(255,255,255,0.05); color: var(--nt-muted); }
+
+    .acum-month-dot.good {
+      background: rgba(34, 197, 94, 0.2);
+      color: var(--nt-green);
+    }
+
+    .acum-month-dot.warn {
+      background: rgba(234, 179, 8, 0.2);
+      color: var(--nt-yellow);
+    }
+
+    .acum-month-dot.bad {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--nt-red);
+    }
+
+    .acum-month-dot.empty {
+      background: rgba(255, 255, 255, 0.05);
+      color: var(--nt-muted);
+    }
 
     /* ---- FOOTER ---- */
     .dash-footer {
-      margin-top: 40px; padding: 20px 0 8px;
+      margin-top: 40px;
+      padding: 20px 0 8px;
       border-top: 1px solid var(--nt-border);
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: 0.7rem; color: var(--nt-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.7rem;
+      color: var(--nt-muted);
     }
-    .dash-footer-brand { font-weight: 700; color: var(--nt-blue-light); }
+
+    .dash-footer-brand {
+      font-weight: 700;
+      color: var(--nt-blue-light);
+    }
 
     /* ---- DETAIL MODAL ---- */
     .modal-overlay {
-      display: none; position: fixed; inset: 0;
-      background: rgba(0,0,0,0.65); z-index: 500;
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.65);
+      z-index: 500;
       backdrop-filter: blur(4px);
-      align-items: center; justify-content: center;
+      align-items: center;
+      justify-content: center;
     }
-    .modal-overlay.open { display: flex; }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
     .modal-box {
       background: var(--nt-navy-card);
       border: 1px solid var(--nt-border);
       border-radius: var(--nt-radius-lg);
-      width: min(700px, 95vw); max-height: 85vh;
+      width: min(700px, 95vw);
+      max-height: 85vh;
       overflow-y: auto;
       padding: 28px 28px 24px;
       position: relative;
       animation: slideUp 0.25s ease;
     }
+
     @keyframes slideUp {
-      from { opacity: 0; transform: translateY(24px); }
-      to   { opacity: 1; transform: none; }
+      from {
+        opacity: 0;
+        transform: translateY(24px);
+      }
+
+      to {
+        opacity: 1;
+        transform: none;
+      }
     }
+
     .modal-close {
-      position: absolute; top: 16px; right: 18px;
-      background: none; border: none;
-      color: var(--nt-muted); font-size: 1.4rem;
-      cursor: pointer; line-height: 1;
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      background: none;
+      border: none;
+      color: var(--nt-muted);
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
       transition: color 0.15s;
     }
-    .modal-close:hover { color: var(--nt-white); }
-    .modal-title { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
-    .modal-kpi-code {
-      font-size: 0.7rem; font-family: var(--font-mono);
-      color: var(--nt-orange); font-weight: 600; margin-bottom: 18px;
+
+    .modal-close:hover {
+      color: var(--nt-white);
     }
-    .modal-detail-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+
+    .modal-title {
+      font-size: 1rem;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .modal-kpi-code {
+      font-size: 0.7rem;
+      font-family: var(--font-mono);
+      color: var(--nt-orange);
+      font-weight: 600;
       margin-bottom: 18px;
     }
-    .modal-detail-item { }
-    .modal-detail-label {
-      font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em;
-      color: var(--nt-muted); font-weight: 600; margin-bottom: 3px;
+
+    .modal-detail-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
     }
+
+    .modal-detail-item {}
+
+    .modal-detail-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--nt-muted);
+      font-weight: 600;
+      margin-bottom: 3px;
+    }
+
     .modal-detail-value {
-      font-size: 0.82rem; color: var(--nt-white); font-weight: 500;
+      font-size: 0.82rem;
+      color: var(--nt-white);
+      font-weight: 500;
       line-height: 1.4;
     }
+
     .modal-criteria {
-      background: rgba(255,255,255,0.03);
+      background: rgba(255, 255, 255, 0.03);
       border: 1px solid var(--nt-border);
       border-radius: var(--nt-radius);
       padding: 14px;
-      font-size: 0.78rem; color: var(--nt-muted);
-      line-height: 1.6; margin-top: 12px;
+      font-size: 0.78rem;
+      color: var(--nt-muted);
+      line-height: 1.6;
+      margin-top: 12px;
     }
-    .modal-criteria strong { color: var(--nt-white); }
+
+    .modal-criteria strong {
+      color: var(--nt-white);
+    }
 
     /* ---- EMPTY STATE ---- */
     .empty-state {
-      text-align: center; padding: 60px 20px;
+      text-align: center;
+      padding: 60px 20px;
       color: var(--nt-muted);
     }
-    .empty-state-icon { font-size: 3rem; margin-bottom: 12px; opacity: 0.4; }
-    .empty-state-msg { font-size: 0.85rem; }
+
+    .empty-state-icon {
+      font-size: 3rem;
+      margin-bottom: 12px;
+      opacity: 0.4;
+    }
+
+    .empty-state-msg {
+      font-size: 0.85rem;
+    }
 
     /* ---- RESPONSIVE ---- */
     @media (max-width: 768px) {
-      .sidebar { display: none; }
-      .main-content { padding: 16px; }
-      .summary-grid { grid-template-columns: 1fr 1fr; }
-      .modal-detail-grid { grid-template-columns: 1fr; }
+      .sidebar {
+        display: none;
+      }
+
+      .main-content {
+        padding: 16px;
+      }
+
+      .summary-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .modal-detail-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('nt-dashboard-theme') === 'light') {
+          document.body.classList.add('light-theme');
+        }
+      } catch (e) {
+        // Mantém o tema escuro padrão se o armazenamento local estiver indisponível.
+      }
+    })();
+  </script>
 
-<!-- LOADING -->
-<div id="loading-screen">
-  <div class="loader-logo">Norte<span>Tech</span></div>
-  <div class="loader-sub">Carregando dados da Carta de Metas — Logística</div>
-  <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
-</div>
-
-<!-- HEADER -->
-<header>
-  <div class="header-brand">
-    <div class="brand-icon">NT</div>
-    <div>
-      <div class="brand-text">Norte<span>Tech</span></div>
-      <div class="brand-sub">Soluções em Energia · Logística KPI</div>
+  <!-- LOADING -->
+  <div id="loading-screen">
+    <div class="loader-logo">Norte<span>Tech</span></div>
+    <div class="loader-sub">Carregando dados da Carta de Metas — Logística</div>
+    <div class="loader-bar-wrap">
+      <div class="loader-bar"></div>
     </div>
   </div>
-  <div class="header-right">
-    <div class="header-period-badge" id="header-period">2026</div>
-    <button class="header-refresh-btn" onclick="loadData()">
-      <span class="refresh-icon">↻</span> Atualizar
-    </button>
+
+  <!-- HEADER -->
+  <header>
+    <div class="header-brand">
+      <div class="brand-icon">NT</div>
+      <div>
+        <div class="brand-text">Norte<span>Tech</span></div>
+        <div class="brand-sub">Soluções em Energia · Logística KPI</div>
+      </div>
+    </div>
+    <div class="header-right">
+      <div class="header-period-badge" id="header-period">2026</div>
+      <button class="header-theme-btn" id="theme-toggle" type="button" onclick="toggleTheme()" aria-pressed="false">
+        <span class="theme-icon" id="theme-icon">☾</span> <span id="theme-label">Modo escuro</span>
+      </button>
+      <button class="header-refresh-btn" onclick="loadData()">
+        <span class="refresh-icon">↻</span> Atualizar
+      </button>
+    </div>
+  </header>
+
+  <!-- LAYOUT -->
+  <div class="layout">
+
+    <!-- SIDEBAR -->
+    <nav class="sidebar">
+      <div class="sidebar-section-title">Navegação</div>
+      <div class="sidebar-nav-item active" data-view="dashboard" onclick="switchView('dashboard', this)">
+        <span class="sidebar-nav-icon">⬛</span> Dashboard
+      </div>
+      <div class="sidebar-nav-item" data-view="kpis" onclick="switchView('kpis', this)">
+        <span class="sidebar-nav-icon">📊</span> KPIs por Mês
+        <span class="nav-badge" id="badge-kpis">30</span>
+      </div>
+      <div class="sidebar-nav-item" data-view="colaboradores" onclick="switchView('colaboradores', this)">
+        <span class="sidebar-nav-icon">👤</span> Colaboradores
+      </div>
+      <div class="sidebar-nav-item" data-view="acumulado" onclick="switchView('acumulado', this)">
+        <span class="sidebar-nav-icon">📈</span> Acumulado Anual
+      </div>
+
+      <div class="sidebar-section-title" style="margin-top:auto">Info</div>
+      <div class="sidebar-nav-item">
+        <span class="sidebar-nav-icon">🏢</span> Logística
+      </div>
+      <div class="sidebar-nav-item">
+        <span class="sidebar-nav-icon">👥</span> Responsáveis
+      </div>
+    </nav>
+
+    <!-- MAIN -->
+    <main class="main-content">
+
+      <!-- VIEW: DASHBOARD -->
+      <div class="view active" id="view-dashboard">
+        <div class="page-title-row">
+          <div>
+            <div class="page-title">Carta de <span>Metas</span></div>
+            <div class="page-subtitle">Logística · Visão Geral · <span id="dash-period">2026</span></div>
+          </div>
+        </div>
+
+        <div class="month-tabs" id="month-tabs-dashboard"></div>
+
+        <div class="filter-bar">
+          <span class="filter-label">Colaborador:</span>
+          <select class="filter-select" id="dash-employee-select" onchange="renderDashboard()">
+            <option value="">Todos os colaboradores</option>
+          </select>
+        </div>
+
+        <div class="summary-grid" id="summary-cards"></div>
+
+        <div class="table-wrap">
+          <div class="table-header-bar">
+            <span class="table-title">Indicadores do Mês</span>
+            <span class="table-count" id="table-count-dash">—</span>
+          </div>
+          <div style="overflow-x:auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>Cód.</th>
+                  <th>Indicador</th>
+                  <th>Colaborador</th>
+                  <th>Tipo</th>
+                  <th>Meta</th>
+                  <th>Realizado</th>
+                  <th style="min-width:130px">Progresso</th>
+                  <th>Status</th>
+                  <th>Melhor</th>
+                </tr>
+              </thead>
+              <tbody id="dashboard-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW: KPIs por Mês -->
+      <div class="view" id="view-kpis">
+        <div class="page-title-row">
+          <div>
+            <div class="page-title">KPIs por <span>Mês</span></div>
+            <div class="page-subtitle">Selecione um mês para visualizar os indicadores</div>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <span class="filter-label">Mês:</span>
+          <select class="filter-select" id="kpi-month-select" onchange="renderKpiTable()"></select>
+          <span class="filter-label" style="margin-left:10px">Colaborador:</span>
+          <select class="filter-select" id="kpi-employee-select" onchange="renderKpiTable()">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="table-wrap">
+          <div class="table-header-bar">
+            <span class="table-title">Indicadores</span>
+            <span class="table-count" id="kpi-count">—</span>
+          </div>
+          <div style="overflow-x:auto">
+            <table>
+              <thead>
+                <tr>
+                  <th>Ordem</th>
+                  <th>Cód.</th>
+                  <th>Indicador</th>
+                  <th>Colaborador</th>
+                  <th>Peso</th>
+                  <th>Meta</th>
+                  <th>Realizado</th>
+                  <th style="min-width:130px">Progresso</th>
+                  <th>Status</th>
+                  <th>Detalhes</th>
+                </tr>
+              </thead>
+              <tbody id="kpi-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- VIEW: COLABORADORES -->
+      <div class="view" id="view-colaboradores">
+        <div class="page-title-row">
+          <div>
+            <div class="page-title"><span>Colaboradores</span></div>
+            <div class="page-subtitle">Desempenho individual por KPI</div>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <span class="filter-label">Mês:</span>
+          <select class="filter-select" id="collab-month-select" onchange="renderCollabView()"></select>
+        </div>
+        <div class="employee-grid" id="employee-grid"></div>
+      </div>
+
+      <!-- VIEW: ACUMULADO -->
+      <div class="view" id="view-acumulado">
+        <div class="page-title-row">
+          <div>
+            <div class="page-title">Acumulado <span>Anual</span></div>
+            <div class="page-subtitle">Evolução de todos os indicadores ao longo do ano</div>
+          </div>
+        </div>
+        <div class="filter-bar">
+          <span class="filter-label">Colaborador:</span>
+          <select class="filter-select" id="acum-employee-select" onchange="renderAcumulado()">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="acum-grid" id="acum-grid"></div>
+      </div>
+
+    </main>
   </div>
-</header>
 
-<!-- LAYOUT -->
-<div class="layout">
-
-  <!-- SIDEBAR -->
-  <nav class="sidebar">
-    <div class="sidebar-section-title">Navegação</div>
-    <div class="sidebar-nav-item active" data-view="dashboard" onclick="switchView('dashboard', this)">
-      <span class="sidebar-nav-icon">⬛</span> Dashboard
+  <!-- MODAL DETALHES -->
+  <div class="modal-overlay" id="detail-modal" onclick="closeModalOnOverlay(event)">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div class="modal-kpi-code" id="modal-kpi-code"></div>
+      <div class="modal-title" id="modal-kpi-name"></div>
+      <div class="modal-detail-grid" id="modal-detail-grid"></div>
+      <div class="modal-criteria" id="modal-criteria-box"></div>
     </div>
-    <div class="sidebar-nav-item" data-view="kpis" onclick="switchView('kpis', this)">
-      <span class="sidebar-nav-icon">📊</span> KPIs por Mês
-      <span class="nav-badge" id="badge-kpis">30</span>
-    </div>
-    <div class="sidebar-nav-item" data-view="colaboradores" onclick="switchView('colaboradores', this)">
-      <span class="sidebar-nav-icon">👤</span> Colaboradores
-    </div>
-    <div class="sidebar-nav-item" data-view="acumulado" onclick="switchView('acumulado', this)">
-      <span class="sidebar-nav-icon">📈</span> Acumulado Anual
-    </div>
-
-    <div class="sidebar-section-title" style="margin-top:auto">Info</div>
-    <div class="sidebar-nav-item">
-      <span class="sidebar-nav-icon">🏢</span> Logística
-    </div>
-    <div class="sidebar-nav-item">
-      <span class="sidebar-nav-icon">👥</span> Responsáveis
-    </div>
-  </nav>
-
-  <!-- MAIN -->
-  <main class="main-content">
-
-    <!-- VIEW: DASHBOARD -->
-    <div class="view active" id="view-dashboard">
-      <div class="page-title-row">
-        <div>
-          <div class="page-title">Carta de <span>Metas</span></div>
-          <div class="page-subtitle">Logística · Visão Geral · <span id="dash-period">2026</span></div>
-        </div>
-      </div>
-
-      <div class="month-tabs" id="month-tabs-dashboard"></div>
-
-      <div class="filter-bar">
-        <span class="filter-label">Colaborador:</span>
-        <select class="filter-select" id="dash-employee-select" onchange="renderDashboard()">
-          <option value="">Todos os colaboradores</option>
-        </select>
-      </div>
-
-      <div class="summary-grid" id="summary-cards"></div>
-
-      <div class="table-wrap">
-        <div class="table-header-bar">
-          <span class="table-title">Indicadores do Mês</span>
-          <span class="table-count" id="table-count-dash">—</span>
-        </div>
-        <div style="overflow-x:auto">
-          <table>
-            <thead>
-              <tr>
-                <th>Cód.</th>
-                <th>Indicador</th>
-                <th>Colaborador</th>
-                <th>Tipo</th>
-                <th>Meta</th>
-                <th>Realizado</th>
-                <th style="min-width:130px">Progresso</th>
-                <th>Status</th>
-                <th>Melhor</th>
-              </tr>
-            </thead>
-            <tbody id="dashboard-table-body"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- VIEW: KPIs por Mês -->
-    <div class="view" id="view-kpis">
-      <div class="page-title-row">
-        <div>
-          <div class="page-title">KPIs por <span>Mês</span></div>
-          <div class="page-subtitle">Selecione um mês para visualizar os indicadores</div>
-        </div>
-      </div>
-      <div class="filter-bar">
-        <span class="filter-label">Mês:</span>
-        <select class="filter-select" id="kpi-month-select" onchange="renderKpiTable()"></select>
-        <span class="filter-label" style="margin-left:10px">Colaborador:</span>
-        <select class="filter-select" id="kpi-employee-select" onchange="renderKpiTable()">
-          <option value="">Todos</option>
-        </select>
-      </div>
-      <div class="table-wrap">
-        <div class="table-header-bar">
-          <span class="table-title">Indicadores</span>
-          <span class="table-count" id="kpi-count">—</span>
-        </div>
-        <div style="overflow-x:auto">
-          <table>
-            <thead>
-              <tr>
-                <th>Ordem</th>
-                <th>Cód.</th>
-                <th>Indicador</th>
-                <th>Colaborador</th>
-                <th>Peso</th>
-                <th>Meta</th>
-                <th>Realizado</th>
-                <th style="min-width:130px">Progresso</th>
-                <th>Status</th>
-                <th>Detalhes</th>
-              </tr>
-            </thead>
-            <tbody id="kpi-table-body"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- VIEW: COLABORADORES -->
-    <div class="view" id="view-colaboradores">
-      <div class="page-title-row">
-        <div>
-          <div class="page-title"><span>Colaboradores</span></div>
-          <div class="page-subtitle">Desempenho individual por KPI</div>
-        </div>
-      </div>
-      <div class="filter-bar">
-        <span class="filter-label">Mês:</span>
-        <select class="filter-select" id="collab-month-select" onchange="renderCollabView()"></select>
-      </div>
-      <div class="employee-grid" id="employee-grid"></div>
-    </div>
-
-    <!-- VIEW: ACUMULADO -->
-    <div class="view" id="view-acumulado">
-      <div class="page-title-row">
-        <div>
-          <div class="page-title">Acumulado <span>Anual</span></div>
-          <div class="page-subtitle">Evolução de todos os indicadores ao longo do ano</div>
-        </div>
-      </div>
-      <div class="filter-bar">
-        <span class="filter-label">Colaborador:</span>
-        <select class="filter-select" id="acum-employee-select" onchange="renderAcumulado()">
-          <option value="">Todos</option>
-        </select>
-      </div>
-      <div class="acum-grid" id="acum-grid"></div>
-    </div>
-
-  </main>
-</div>
-
-<!-- MODAL DETALHES -->
-<div class="modal-overlay" id="detail-modal" onclick="closeModalOnOverlay(event)">
-  <div class="modal-box">
-    <button class="modal-close" onclick="closeModal()">✕</button>
-    <div class="modal-kpi-code" id="modal-kpi-code"></div>
-    <div class="modal-title" id="modal-kpi-name"></div>
-    <div class="modal-detail-grid" id="modal-detail-grid"></div>
-    <div class="modal-criteria" id="modal-criteria-box"></div>
   </div>
-</div>
 
-<!-- ============================================================
+  <!-- ============================================================
      APPS SCRIPT BRIDGE + DATA ENGINE
      ============================================================ -->
-<script>
-// ============================================================
-//  DATA LAYER — integrado com Google Sheets via Apps Script
-// ============================================================
+  <script>
+    // ============================================================
+    //  DATA LAYER — integrado com Google Sheets via Apps Script
+    // ============================================================
 
-// Dados globais parseados das abas da planilha
-let G = {
-  kpis: [],        // array de todos os KPIs (da aba DESCRIÇÃO)
-  monthly: {},     // { '1': [...], '2': [...], ... } — dados de cada mês
-  acumulado: [],   // dados da aba ACUMULADO
-  months: ['JANEIRO','FEVEREIRO','MARÇO','ABRIL','MAIO','JUNHO',
-           'JULHO','AGOSTO','SETEMBRO','OUTUBRO','NOVEMBRO','DEZEMBRO'],
-  monthKeys: ['1','2','3','4','5','6','7','8','9','10','11','12'],
-  employees: [],   // lista única de colaboradores
-  currentMonth: '1'
-};
+    // Dados globais parseados das abas da planilha
+    let G = {
+      kpis: [],        // array de todos os KPIs (da aba DESCRIÇÃO)
+      monthly: {},     // { '1': [...], '2': [...], ... } — dados de cada mês
+      acumulado: [],   // dados da aba ACUMULADO
+      months: ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO',
+        'JULHO', 'AGOSTO', 'SETEMBRO', 'OUTUBRO', 'NOVEMBRO', 'DEZEMBRO'],
+      monthKeys: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+      employees: [],   // lista única de colaboradores
+      currentMonth: '1'
+    };
 
-// ============================================================
-//  APPS SCRIPT INTEGRATION
-//  Substitua as funções abaixo pelas chamadas reais ao servidor.
-//  No Apps Script, use:
-//    google.script.run.withSuccessHandler(cb).getNomeFunc()
-// ============================================================
+    const THEME_STORAGE_KEY = 'nt-dashboard-theme';
 
-/**
- * Chama o Apps Script para buscar todos os dados da planilha.
- * A função Apps Script deve retornar um objeto JSON como este:
- * {
- *   kpis: [ {ordem, matricula, nome, codIndicador, indicador, criterio,
- *             responsavel, melhor, range, peso, tipoMeta, meta, ...}, ... ],
- *   monthly: { '1': [...realizado por linha...], '2': [...], ... },
- *   acumulado: [ {codIndicador, nome, jan, fev, mar, ...}, ... ]
- * }
- */
-function loadData() {
-  showLoading(true);
+    function getStoredTheme() {
+      try {
+        return localStorage.getItem(THEME_STORAGE_KEY) || 'dark';
+      } catch (e) {
+        return 'dark';
+      }
+    }
 
-  google.script.run
-    .withSuccessHandler(function(response) {
-      const data = typeof response === 'string'
-        ? JSON.parse(response)
-        : response;
+    function setStoredTheme(theme) {
+      try {
+        localStorage.setItem(THEME_STORAGE_KEY, theme);
+      } catch (e) {
+        // Ignora quando o navegador bloqueia localStorage.
+      }
+    }
 
-      if (data.erro) {
-        onDataError(data.erro);
-        return;
+    function applyTheme(theme) {
+      const isLight = theme === 'light';
+      document.body.classList.toggle('light-theme', isLight);
+
+      const toggle = document.getElementById('theme-toggle');
+      const icon = document.getElementById('theme-icon');
+      const label = document.getElementById('theme-label');
+
+      if (toggle) {
+        toggle.setAttribute('aria-pressed', String(isLight));
+        toggle.title = isLight ? 'Alternar para modo escuro' : 'Alternar para modo claro';
+      }
+      if (icon) icon.textContent = isLight ? '☀' : '☾';
+      if (label) label.textContent = isLight ? 'Modo claro' : 'Modo escuro';
+    }
+
+    function toggleTheme() {
+      const nextTheme = document.body.classList.contains('light-theme') ? 'dark' : 'light';
+      setStoredTheme(nextTheme);
+      applyTheme(nextTheme);
+    }
+
+    // ============================================================
+    //  APPS SCRIPT INTEGRATION
+    //  Substitua as funções abaixo pelas chamadas reais ao servidor.
+    //  No Apps Script, use:
+    //    google.script.run.withSuccessHandler(cb).getNomeFunc()
+    // ============================================================
+
+    /**
+     * Chama o Apps Script para buscar todos os dados da planilha.
+     * A função Apps Script deve retornar um objeto JSON como este:
+     * {
+     *   kpis: [ {ordem, matricula, nome, codIndicador, indicador, criterio,
+     *             responsavel, melhor, range, peso, tipoMeta, meta, ...}, ... ],
+     *   monthly: { '1': [...realizado por linha...], '2': [...], ... },
+     *   acumulado: [ {codIndicador, nome, jan, fev, mar, ...}, ... ]
+     * }
+     */
+    function loadData() {
+      showLoading(true);
+
+      google.script.run
+        .withSuccessHandler(function (response) {
+          const data = typeof response === 'string'
+            ? JSON.parse(response)
+            : response;
+
+          if (data.erro) {
+            onDataError(data.erro);
+            return;
+          }
+
+          onDataReceived(data);
+        })
+        .withFailureHandler(function (err) {
+          onDataError(err);
+        })
+        .getDashboardData();
+    }
+
+    function onDataError(err) {
+      showLoading(false);
+      alert('Erro ao carregar dados: ' + err.message);
+    }
+
+    function showLoading(show) {
+      const el = document.getElementById('loading-screen');
+      if (!show) {
+        el.classList.add('fade-out');
+        setTimeout(() => el.style.display = 'none', 700);
+      } else {
+        el.style.display = 'flex';
+        el.classList.remove('fade-out');
+      }
+    }
+
+    // ============================================================
+    //  DATA PROCESSING
+    // ============================================================
+    function onDataReceived(data) {
+      G.kpis = data.kpis;
+      G.monthly = data.monthly;
+
+      // Extract unique employees
+      const empMap = {};
+      G.kpis.forEach(k => {
+        if (!empMap[k.matricula]) empMap[k.matricula] = k.nome;
+      });
+      G.employees = Object.entries(empMap).map(([id, nome]) => ({ id, nome }));
+
+      // Determine current month (first month with real data)
+      for (let i = 0; i < G.monthKeys.length; i++) {
+        const mk = G.monthKeys[i];
+        const monthData = G.monthly[mk] || [];
+        const hasData = monthData.some(v => v !== null && v !== 0);
+        if (hasData) G.currentMonth = mk;
       }
 
-      onDataReceived(data);
-    })
-    .withFailureHandler(function(err) {
-      onDataError(err);
-    })
-    .getDashboardData();
-}
+      // Populate all selects
+      populateSelects();
 
-function onDataError(err) {
-  showLoading(false);
-  alert('Erro ao carregar dados: ' + err.message);
-}
+      // Render default view
+      renderDashboard();
+      showLoading(false);
+    }
 
-function showLoading(show) {
-  const el = document.getElementById('loading-screen');
-  if (!show) {
-    el.classList.add('fade-out');
-    setTimeout(() => el.style.display = 'none', 700);
-  } else {
-    el.style.display = 'flex';
-    el.classList.remove('fade-out');
-  }
-}
+    function getKpiValue(monthKey, idx) {
+      const arr = G.monthly[monthKey] || [];
+      const val = arr[idx];
+      return (val === null || val === undefined) ? null : Number(val);
+    }
 
-// ============================================================
-//  DATA PROCESSING
-// ============================================================
-function onDataReceived(data) {
-  G.kpis    = data.kpis;
-  G.monthly = data.monthly;
+    function calcProgress(kpi, value) {
+      if (value === null || value === undefined) return null;
+      const meta = Number(kpi.meta);
+      if (meta === 0) return null;
 
-  // Extract unique employees
-  const empMap = {};
-  G.kpis.forEach(k => {
-    if (!empMap[k.matricula]) empMap[k.matricula] = k.nome;
-  });
-  G.employees = Object.entries(empMap).map(([id, nome]) => ({ id, nome }));
-
-  // Determine current month (first month with real data)
-  for (let i = 0; i < G.monthKeys.length; i++) {
-    const mk = G.monthKeys[i];
-    const monthData = G.monthly[mk] || [];
-    const hasData = monthData.some(v => v !== null && v !== 0);
-    if (hasData) G.currentMonth = mk;
-  }
-
-  // Populate all selects
-  populateSelects();
-
-  // Render default view
-  renderDashboard();
-  showLoading(false);
-}
-
-function getKpiValue(monthKey, idx) {
-  const arr = G.monthly[monthKey] || [];
-  const val = arr[idx];
-  return (val === null || val === undefined) ? null : Number(val);
-}
-
-function calcProgress(kpi, value) {
-  if (value === null || value === undefined) return null;
-  const meta = Number(kpi.meta);
-  if (meta === 0) return null;
-
-  if (kpi.tipo === 'MOEDA' || kpi.tipo === 'NÚMERO' || kpi.tipo === 'NÚMERO (INT)') {
-    if (kpi.melhor === '↓') {
-      if (value === 0) return null;
-      return Math.min(meta / value, 1.5);
-    } else {
+      if (kpi.tipo === 'MOEDA' || kpi.tipo === 'NÚMERO' || kpi.tipo === 'NÚMERO (INT)') {
+        if (kpi.melhor === '↓') {
+          if (value === 0) return null;
+          return Math.min(meta / value, 1.5);
+        } else {
+          return Math.min(value / meta, 1.5);
+        }
+      }
+      // PORCENTAGEM
+      if (kpi.melhor === '↓') {
+        if (value === 0) return 1;
+        return Math.min(meta / Math.max(value, 0.001), 1.5);
+      }
       return Math.min(value / meta, 1.5);
     }
-  }
-  // PORCENTAGEM
-  if (kpi.melhor === '↓') {
-    if (value === 0) return 1;
-    return Math.min(meta / Math.max(value, 0.001), 1.5);
-  }
-  return Math.min(value / meta, 1.5);
-}
 
-function getStatus(progress, value) {
-  if (progress === null || value === null) return 'no-data';
-  if (progress >= 0.95) return 'on-track';
-  if (progress >= 0.70) return 'at-risk';
-  return 'off-track';
-}
+    function getStatus(progress, value) {
+      if (progress === null || value === null) return 'no-data';
+      if (progress >= 0.95) return 'on-track';
+      if (progress >= 0.70) return 'at-risk';
+      return 'off-track';
+    }
 
-function formatValue(kpi, value) {
-  if (value === null) return '—';
-  if (kpi.tipo === 'MOEDA') return 'R$ ' + Number(value).toLocaleString('pt-BR', {maximumFractionDigits:0});
-  if (kpi.tipo === 'PORCENTAGEM' || kpi.tipo === 'PORCENTAGEM (INT)') return (value * 100).toFixed(1) + '%';
-  if (kpi.tipo === 'NÚMERO (INT)') return Math.round(value).toString();
-  return Number(value).toFixed(2);
-}
+    function formatValue(kpi, value) {
+      if (value === null) return '—';
+      if (kpi.tipo === 'MOEDA') return 'R$ ' + Number(value).toLocaleString('pt-BR', { maximumFractionDigits: 0 });
+      if (kpi.tipo === 'PORCENTAGEM' || kpi.tipo === 'PORCENTAGEM (INT)') return (value * 100).toFixed(1) + '%';
+      if (kpi.tipo === 'NÚMERO (INT)') return Math.round(value).toString();
+      return Number(value).toFixed(2);
+    }
 
-function formatMeta(kpi) {
-  return formatValue(kpi, kpi.meta);
-}
+    function formatMeta(kpi) {
+      return formatValue(kpi, kpi.meta);
+    }
 
-function employeeMatches(kpi, employeeId) {
-  if (!employeeId) return true;
-  return String(kpi.matricula || '').trim() === String(employeeId).trim();
-}
+    function employeeMatches(kpi, employeeId) {
+      if (!employeeId) return true;
+      return String(kpi.matricula || '').trim() === String(employeeId).trim();
+    }
 
-// ============================================================
-//  UI HELPERS
-// ============================================================
-const avatarColors = ['#1a56db','#f97316','#14b8a6','#a855f7','#ec4899','#22c55e','#eab308'];
-function getAvatarColor(name) {
-  let hash = 0;
-  for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) & 0xffffff;
-  return avatarColors[Math.abs(hash) % avatarColors.length];
-}
-function initials(nome) {
-  const parts = nome.split(/[\s\/]/);
-  return parts.slice(0,2).map(p => p[0] || '').join('').toUpperCase();
-}
+    // ============================================================
+    //  UI HELPERS
+    // ============================================================
+    const avatarColors = ['#1a56db', '#f97316', '#14b8a6', '#a855f7', '#ec4899', '#22c55e', '#eab308'];
+    function getAvatarColor(name) {
+      let hash = 0;
+      for (let i = 0; i < name.length; i++) hash = (hash * 31 + name.charCodeAt(i)) & 0xffffff;
+      return avatarColors[Math.abs(hash) % avatarColors.length];
+    }
+    function initials(nome) {
+      const parts = nome.split(/[\s\/]/);
+      return parts.slice(0, 2).map(p => p[0] || '').join('').toUpperCase();
+    }
 
-function statusBadgeHTML(status) {
-  const map = {
-    'on-track':  ['✓', 'badge-on-track',  'No Prazo'],
-    'at-risk':   ['⚠', 'badge-at-risk',   'Em Risco'],
-    'off-track': ['✗', 'badge-off-track', 'Atrasado'],
-    'no-data':   ['–', 'badge-no-data',   'Sem Dado'],
-  };
-  const [dot, cls, label] = map[status] || map['no-data'];
-  return `<span class="badge ${cls}"><span class="badge-dot"></span>${label}</span>`;
-}
+    function statusBadgeHTML(status) {
+      const map = {
+        'on-track': ['✓', 'badge-on-track', 'No Prazo'],
+        'at-risk': ['⚠', 'badge-at-risk', 'Em Risco'],
+        'off-track': ['✗', 'badge-off-track', 'Atrasado'],
+        'no-data': ['–', 'badge-no-data', 'Sem Dado'],
+      };
+      const [dot, cls, label] = map[status] || map['no-data'];
+      return `<span class="badge ${cls}"><span class="badge-dot"></span>${label}</span>`;
+    }
 
-function progressBarHTML(progress, status) {
-  const pct = progress !== null ? Math.min(progress * 100, 100) : 0;
-  const colorMap = {
-    'on-track': 'var(--nt-green)', 'at-risk': 'var(--nt-yellow)',
-    'off-track': 'var(--nt-red)', 'no-data': 'var(--nt-muted)'
-  };
-  const color = colorMap[status] || 'var(--nt-muted)';
-  const label = progress !== null ? (progress * 100).toFixed(0) + '%' : '—';
-  return `
+    function progressBarHTML(progress, status) {
+      const pct = progress !== null ? Math.min(progress * 100, 100) : 0;
+      const colorMap = {
+        'on-track': 'var(--nt-green)', 'at-risk': 'var(--nt-yellow)',
+        'off-track': 'var(--nt-red)', 'no-data': 'var(--nt-muted)'
+      };
+      const color = colorMap[status] || 'var(--nt-muted)';
+      const label = progress !== null ? (progress * 100).toFixed(0) + '%' : '—';
+      return `
     <div class="progress-wrap">
       <div class="progress-bar-bg">
         <div class="progress-bar-fill" style="width:${pct}%;background:${color}"></div>
       </div>
       <span class="progress-label" style="color:${color}">${label}</span>
     </div>`;
-}
+    }
 
-// ============================================================
-//  POPULATE SELECTS
-// ============================================================
-function populateSelects() {
-  // Month selects
-  ['kpi-month-select', 'collab-month-select'].forEach(id => {
-    const sel = document.getElementById(id);
-    if (!sel) return;
-    sel.innerHTML = '';
-    G.monthKeys.forEach((mk, i) => {
-      const opt = document.createElement('option');
-      opt.value = mk;
-      opt.textContent = G.months[i];
-      if (mk === G.currentMonth) opt.selected = true;
-      sel.appendChild(opt);
-    });
-  });
+    // ============================================================
+    //  POPULATE SELECTS
+    // ============================================================
+    function populateSelects() {
+      // Month selects
+      ['kpi-month-select', 'collab-month-select'].forEach(id => {
+        const sel = document.getElementById(id);
+        if (!sel) return;
+        sel.innerHTML = '';
+        G.monthKeys.forEach((mk, i) => {
+          const opt = document.createElement('option');
+          opt.value = mk;
+          opt.textContent = G.months[i];
+          if (mk === G.currentMonth) opt.selected = true;
+          sel.appendChild(opt);
+        });
+      });
 
-  // Employee selects
-  ['dash-employee-select', 'kpi-employee-select', 'acum-employee-select'].forEach(id => {
-    const sel = document.getElementById(id);
-    if (!sel) return;
-    // Keep "Todos" first
-    sel.innerHTML = '<option value="">Todos os colaboradores</option>';
-    G.employees.forEach(e => {
-      const opt = document.createElement('option');
-      opt.value = e.id;
-      opt.textContent = e.nome + ' (' + e.id + ')';
-      sel.appendChild(opt);
-    });
-  });
-}
+      // Employee selects
+      ['dash-employee-select', 'kpi-employee-select', 'acum-employee-select'].forEach(id => {
+        const sel = document.getElementById(id);
+        if (!sel) return;
+        // Keep "Todos" first
+        sel.innerHTML = '<option value="">Todos os colaboradores</option>';
+        G.employees.forEach(e => {
+          const opt = document.createElement('option');
+          opt.value = e.id;
+          opt.textContent = e.nome + ' (' + e.id + ')';
+          sel.appendChild(opt);
+        });
+      });
+    }
 
-// ============================================================
-//  MONTH TABS (dashboard)
-// ============================================================
-function buildMonthTabs(containerId, onClickFn) {
-  const container = document.getElementById(containerId);
-  if (!container) return;
-  container.innerHTML = '';
-  G.monthKeys.forEach((mk, i) => {
-    const monthArr = G.monthly[mk] || [];
-    const hasData = monthArr.some(v => v !== null && v !== 0 && v !== undefined);
-    const tab = document.createElement('div');
-    tab.className = 'month-tab' + (mk === G.currentMonth ? ' active' : '') + (!hasData ? ' no-data' : '');
-    tab.textContent = G.months[i].slice(0,3);
-    tab.setAttribute('data-month', mk);
-    if (hasData) tab.onclick = () => {
-      G.currentMonth = mk;
-      document.querySelectorAll(`#${containerId} .month-tab`).forEach(t => t.classList.remove('active'));
-      tab.classList.add('active');
-      onClickFn(mk);
-    };
-    container.appendChild(tab);
-  });
-}
+    // ============================================================
+    //  MONTH TABS (dashboard)
+    // ============================================================
+    function buildMonthTabs(containerId, onClickFn) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      container.innerHTML = '';
+      G.monthKeys.forEach((mk, i) => {
+        const monthArr = G.monthly[mk] || [];
+        const hasData = monthArr.some(v => v !== null && v !== 0 && v !== undefined);
+        const tab = document.createElement('div');
+        tab.className = 'month-tab' + (mk === G.currentMonth ? ' active' : '') + (!hasData ? ' no-data' : '');
+        tab.textContent = G.months[i].slice(0, 3);
+        tab.setAttribute('data-month', mk);
+        if (hasData) tab.onclick = () => {
+          G.currentMonth = mk;
+          document.querySelectorAll(`#${containerId} .month-tab`).forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+          onClickFn(mk);
+        };
+        container.appendChild(tab);
+      });
+    }
 
-// ============================================================
-//  DASHBOARD VIEW
-// ============================================================
-function renderDashboard(monthKey) {
-  monthKey = monthKey || G.currentMonth;
-  G.currentMonth = monthKey;
+    // ============================================================
+    //  DASHBOARD VIEW
+    // ============================================================
+    function renderDashboard(monthKey) {
+      monthKey = monthKey || G.currentMonth;
+      G.currentMonth = monthKey;
 
-  buildMonthTabs('month-tabs-dashboard', renderDashboard);
+      buildMonthTabs('month-tabs-dashboard', renderDashboard);
 
-  const empFilter = document.getElementById('dash-employee-select')?.value || '';
+      const empFilter = document.getElementById('dash-employee-select')?.value || '';
 
-  const rows = G.kpis.map((kpi, i) => {
-    const val = getKpiValue(monthKey, i);
-    const prog = calcProgress(kpi, val);
-    const status = getStatus(prog, val);
-    return { kpi, val, prog, status, idx: i };
-  }).filter(r => employeeMatches(r.kpi, empFilter));
+      const rows = G.kpis.map((kpi, i) => {
+        const val = getKpiValue(monthKey, i);
+        const prog = calcProgress(kpi, val);
+        const status = getStatus(prog, val);
+        return { kpi, val, prog, status, idx: i };
+      }).filter(r => employeeMatches(r.kpi, empFilter));
 
-  // Summary cards
-  const total = rows.length;
-  const onTrack  = rows.filter(r => r.status === 'on-track').length;
-  const atRisk   = rows.filter(r => r.status === 'at-risk').length;
-  const offTrack = rows.filter(r => r.status === 'off-track').length;
-  const noData   = rows.filter(r => r.status === 'no-data').length;
-  const validRows = rows.filter(r => r.prog !== null);
-  const avgProg = validRows.reduce((s, r) => s + r.prog, 0) / Math.max(validRows.length, 1);
-  const onTrackPct = total > 0 ? ((onTrack / total) * 100).toFixed(0) : '0';
+      // Summary cards
+      const total = rows.length;
+      const onTrack = rows.filter(r => r.status === 'on-track').length;
+      const atRisk = rows.filter(r => r.status === 'at-risk').length;
+      const offTrack = rows.filter(r => r.status === 'off-track').length;
+      const noData = rows.filter(r => r.status === 'no-data').length;
+      const validRows = rows.filter(r => r.prog !== null);
+      const avgProg = validRows.reduce((s, r) => s + r.prog, 0) / Math.max(validRows.length, 1);
+      const onTrackPct = total > 0 ? ((onTrack / total) * 100).toFixed(0) : '0';
 
-  document.getElementById('summary-cards').innerHTML = `
+      document.getElementById('summary-cards').innerHTML = `
     <div class="summary-card accent-teal">
       <div class="sc-label">Total de KPIs</div>
       <div class="sc-value" style="color:var(--nt-teal)">${total}</div>
@@ -1049,15 +1597,15 @@ function renderDashboard(monthKey) {
     </div>
     <div class="summary-card accent-orange">
       <div class="sc-label">Progresso Médio</div>
-      <div class="sc-value" style="color:var(--nt-orange)">${(avgProg*100).toFixed(0)}%</div>
+      <div class="sc-value" style="color:var(--nt-orange)">${(avgProg * 100).toFixed(0)}%</div>
       <div class="sc-meta">Média ponderada do mês</div>
       <span class="sc-icon">📈</span>
     </div>
   `;
 
-  // Table
-  const tbody = document.getElementById('dashboard-table-body');
-  tbody.innerHTML = rows.map(r => `
+      // Table
+      const tbody = document.getElementById('dashboard-table-body');
+      tbody.innerHTML = rows.map(r => `
     <tr onclick="openModal(${r.idx})" style="cursor:pointer">
       <td class="mono" style="color:var(--nt-orange);font-size:0.7rem">${r.kpi.codInd}</td>
       <td style="max-width:220px">
@@ -1073,29 +1621,29 @@ function renderDashboard(monthKey) {
     </tr>
   `).join('');
 
-  document.getElementById('table-count-dash').textContent = empFilter
-    ? `${total} indicadores filtrados`
-    : `${total} indicadores`;
-  document.getElementById('badge-kpis').textContent = G.kpis.length;
-}
+      document.getElementById('table-count-dash').textContent = empFilter
+        ? `${total} indicadores filtrados`
+        : `${total} indicadores`;
+      document.getElementById('badge-kpis').textContent = G.kpis.length;
+    }
 
-// ============================================================
-//  KPI TABLE VIEW
-// ============================================================
-function renderKpiTable() {
-  const monthKey = document.getElementById('kpi-month-select')?.value || G.currentMonth;
-  const empFilter = document.getElementById('kpi-employee-select')?.value || '';
+    // ============================================================
+    //  KPI TABLE VIEW
+    // ============================================================
+    function renderKpiTable() {
+      const monthKey = document.getElementById('kpi-month-select')?.value || G.currentMonth;
+      const empFilter = document.getElementById('kpi-employee-select')?.value || '';
 
-  let rows = G.kpis.map((kpi, i) => {
-    const val = getKpiValue(monthKey, i);
-    const prog = calcProgress(kpi, val);
-    const status = getStatus(prog, val);
-    return { kpi, val, prog, status, idx: i };
-  });
-  if (empFilter) rows = rows.filter(r => employeeMatches(r.kpi, empFilter));
+      let rows = G.kpis.map((kpi, i) => {
+        const val = getKpiValue(monthKey, i);
+        const prog = calcProgress(kpi, val);
+        const status = getStatus(prog, val);
+        return { kpi, val, prog, status, idx: i };
+      });
+      if (empFilter) rows = rows.filter(r => employeeMatches(r.kpi, empFilter));
 
-  const tbody = document.getElementById('kpi-table-body');
-  tbody.innerHTML = rows.map(r => `
+      const tbody = document.getElementById('kpi-table-body');
+      tbody.innerHTML = rows.map(r => `
     <tr>
       <td class="mono muted">${r.kpi.ordem}</td>
       <td class="mono" style="color:var(--nt-orange);font-size:0.7rem">${r.kpi.codInd}</td>
@@ -1116,44 +1664,44 @@ function renderKpiTable() {
     </tr>
   `).join('');
 
-  document.getElementById('kpi-count').textContent = `${rows.length} indicadores`;
-}
+      document.getElementById('kpi-count').textContent = `${rows.length} indicadores`;
+    }
 
-// ============================================================
-//  COLABORADORES VIEW
-// ============================================================
-function renderCollabView() {
-  const monthKey = document.getElementById('collab-month-select')?.value || G.currentMonth;
+    // ============================================================
+    //  COLABORADORES VIEW
+    // ============================================================
+    function renderCollabView() {
+      const monthKey = document.getElementById('collab-month-select')?.value || G.currentMonth;
 
-  const grid = document.getElementById('employee-grid');
-  grid.innerHTML = '';
+      const grid = document.getElementById('employee-grid');
+      grid.innerHTML = '';
 
-  G.employees.forEach(emp => {
-    const empKpis = G.kpis.map((kpi, i) => ({ kpi, i })).filter(x => employeeMatches(x.kpi, emp.id));
-    if (!empKpis.length) return;
+      G.employees.forEach(emp => {
+        const empKpis = G.kpis.map((kpi, i) => ({ kpi, i })).filter(x => employeeMatches(x.kpi, emp.id));
+        if (!empKpis.length) return;
 
-    const scores = empKpis.map(({kpi, i}) => {
-      const val = getKpiValue(monthKey, i);
-      const prog = calcProgress(kpi, val);
-      return { kpi, val, prog, status: getStatus(prog, val) };
-    });
+        const scores = empKpis.map(({ kpi, i }) => {
+          const val = getKpiValue(monthKey, i);
+          const prog = calcProgress(kpi, val);
+          return { kpi, val, prog, status: getStatus(prog, val) };
+        });
 
-    const validScores = scores.filter(s => s.prog !== null);
-    const avgProg = validScores.length > 0
-      ? validScores.reduce((s, r) => s + r.prog, 0) / validScores.length
-      : null;
-    const overallStatus = getStatus(avgProg, avgProg);
+        const validScores = scores.filter(s => s.prog !== null);
+        const avgProg = validScores.length > 0
+          ? validScores.reduce((s, r) => s + r.prog, 0) / validScores.length
+          : null;
+        const overallStatus = getStatus(avgProg, avgProg);
 
-    const color = getAvatarColor(emp.nome);
-    const colorMap = {
-      'on-track': 'var(--nt-green)', 'at-risk': 'var(--nt-yellow)',
-      'off-track': 'var(--nt-red)', 'no-data': 'var(--nt-muted)'
-    };
-    const progColor = colorMap[overallStatus];
+        const color = getAvatarColor(emp.nome);
+        const colorMap = {
+          'on-track': 'var(--nt-green)', 'at-risk': 'var(--nt-yellow)',
+          'off-track': 'var(--nt-red)', 'no-data': 'var(--nt-muted)'
+        };
+        const progColor = colorMap[overallStatus];
 
-    const card = document.createElement('div');
-    card.className = 'employee-card';
-    card.innerHTML = `
+        const card = document.createElement('div');
+        card.className = 'employee-card';
+        card.innerHTML = `
       <div class="ec-header">
         <div class="ec-avatar" style="background:${color}">${initials(emp.nome)}</div>
         <div class="ec-info">
@@ -1167,15 +1715,15 @@ function renderCollabView() {
         <span>${validScores.length} com dados</span>
       </div>
       <div class="ec-progress-big" style="color:${progColor}">
-        ${avgProg !== null ? (avgProg*100).toFixed(0) + '%' : '—'}
+        ${avgProg !== null ? (avgProg * 100).toFixed(0) + '%' : '—'}
       </div>
       <div class="ec-bar-wrap">
-        <div class="ec-bar-fill" style="width:${avgProg !== null ? Math.min(avgProg*100,100) : 0}%;background:${progColor}"></div>
+        <div class="ec-bar-fill" style="width:${avgProg !== null ? Math.min(avgProg * 100, 100) : 0}%;background:${progColor}"></div>
       </div>
       <div style="margin-top:14px;display:flex;flex-wrap:wrap;gap:4px">
         ${scores.map(s => {
           const dotColor = colorMap[s.status];
-          const p = s.prog !== null ? Math.min(s.prog*100,100).toFixed(0) : '—';
+          const p = s.prog !== null ? Math.min(s.prog * 100, 100).toFixed(0) : '—';
           return `<span title="${s.kpi.codInd}: ${p}%" style="display:inline-flex;align-items:center;gap:3px;background:rgba(255,255,255,0.05);border-radius:5px;padding:2px 7px;font-size:0.62rem;font-family:var(--font-mono);color:${dotColor}">
             <span style="width:5px;height:5px;border-radius:50%;background:${dotColor};display:inline-block"></span>
             ${s.kpi.codInd}
@@ -1183,37 +1731,37 @@ function renderCollabView() {
         }).join('')}
       </div>
     `;
-    grid.appendChild(card);
-  });
-}
+        grid.appendChild(card);
+      });
+    }
 
-// ============================================================
-//  ACUMULADO VIEW
-// ============================================================
-function renderAcumulado() {
-  const empFilter = document.getElementById('acum-employee-select')?.value || '';
-  let kpis = G.kpis;
-  if (empFilter) kpis = kpis.filter(k => employeeMatches(k, empFilter));
+    // ============================================================
+    //  ACUMULADO VIEW
+    // ============================================================
+    function renderAcumulado() {
+      const empFilter = document.getElementById('acum-employee-select')?.value || '';
+      let kpis = G.kpis;
+      if (empFilter) kpis = kpis.filter(k => employeeMatches(k, empFilter));
 
-  const monthShorts = G.months.map(m => m.slice(0,3));
-  const grid = document.getElementById('acum-grid');
+      const monthShorts = G.months.map(m => m.slice(0, 3));
+      const grid = document.getElementById('acum-grid');
 
-  grid.innerHTML = kpis.map((kpi, localIdx) => {
-    const globalIdx = G.kpis.indexOf(kpi);
-    const monthCells = G.monthKeys.map((mk, mi) => {
-      const val = getKpiValue(mk, globalIdx);
-      const prog = calcProgress(kpi, val);
-      const status = getStatus(prog, val);
-      const pct = prog !== null ? (prog*100).toFixed(0) : '—';
-      const cls = status === 'on-track' ? 'good' : status === 'at-risk' ? 'warn' : status === 'off-track' ? 'bad' : 'empty';
-      return `
+      grid.innerHTML = kpis.map((kpi, localIdx) => {
+        const globalIdx = G.kpis.indexOf(kpi);
+        const monthCells = G.monthKeys.map((mk, mi) => {
+          const val = getKpiValue(mk, globalIdx);
+          const prog = calcProgress(kpi, val);
+          const status = getStatus(prog, val);
+          const pct = prog !== null ? (prog * 100).toFixed(0) : '—';
+          const cls = status === 'on-track' ? 'good' : status === 'at-risk' ? 'warn' : status === 'off-track' ? 'bad' : 'empty';
+          return `
         <div class="acum-month-cell">
           <div class="acum-month-label">${monthShorts[mi]}</div>
-          <div class="acum-month-dot ${cls}">${pct !== '—' ? pct+'%' : '—'}</div>
+          <div class="acum-month-dot ${cls}">${pct !== '—' ? pct + '%' : '—'}</div>
         </div>`;
-    }).join('');
+        }).join('');
 
-    return `
+        return `
       <div class="acum-card">
         <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px">
           <span style="font-size:0.65rem;font-family:var(--font-mono);color:var(--nt-orange)">${kpi.codInd}</span>
@@ -1227,28 +1775,28 @@ function renderAcumulado() {
         </div>
         <div class="acum-months">${monthCells}</div>
       </div>`;
-  }).join('');
-}
+      }).join('');
+    }
 
-// ============================================================
-//  MODAL DETALHES
-// ============================================================
-function openModal(idx) {
-  const kpi = G.kpis[idx];
-  const mk  = G.currentMonth;
-  const val = getKpiValue(mk, idx);
-  const prog = calcProgress(kpi, val);
-  const status = getStatus(prog, val);
+    // ============================================================
+    //  MODAL DETALHES
+    // ============================================================
+    function openModal(idx) {
+      const kpi = G.kpis[idx];
+      const mk = G.currentMonth;
+      const val = getKpiValue(mk, idx);
+      const prog = calcProgress(kpi, val);
+      const status = getStatus(prog, val);
 
-  document.getElementById('modal-kpi-code').textContent = kpi.codInd;
-  document.getElementById('modal-kpi-name').textContent = kpi.indicador;
+      document.getElementById('modal-kpi-code').textContent = kpi.codInd;
+      document.getElementById('modal-kpi-name').textContent = kpi.indicador;
 
-  const colorMap = {
-    'on-track': 'var(--nt-green)', 'at-risk': 'var(--nt-yellow)',
-    'off-track': 'var(--nt-red)', 'no-data': 'var(--nt-muted)'
-  };
+      const colorMap = {
+        'on-track': 'var(--nt-green)', 'at-risk': 'var(--nt-yellow)',
+        'off-track': 'var(--nt-red)', 'no-data': 'var(--nt-muted)'
+      };
 
-  document.getElementById('modal-detail-grid').innerHTML = `
+      document.getElementById('modal-detail-grid').innerHTML = `
     <div class="modal-detail-item">
       <div class="modal-detail-label">Colaborador</div>
       <div class="modal-detail-value">${kpi.nome} (Mat. ${kpi.matricula})</div>
@@ -1262,7 +1810,7 @@ function openModal(idx) {
       <div class="modal-detail-value" style="font-family:var(--font-mono);font-weight:700">${formatMeta(kpi)}</div>
     </div>
     <div class="modal-detail-item">
-      <div class="modal-detail-label">Realizado (${G.months[parseInt(mk)-1]})</div>
+      <div class="modal-detail-label">Realizado (${G.months[parseInt(mk) - 1]})</div>
       <div class="modal-detail-value" style="font-family:var(--font-mono);font-weight:700;color:${colorMap[status]}">${formatValue(kpi, val)}</div>
     </div>
     <div class="modal-detail-item">
@@ -1271,7 +1819,7 @@ function openModal(idx) {
     </div>
     <div class="modal-detail-item">
       <div class="modal-detail-label">Peso / Range</div>
-      <div class="modal-detail-value">${kpi.peso}% / ${(kpi.range*100).toFixed(1)}%</div>
+      <div class="modal-detail-value">${kpi.peso}% / ${(kpi.range * 100).toFixed(1)}%</div>
     </div>
     <div class="modal-detail-item">
       <div class="modal-detail-label">Progresso</div>
@@ -1285,62 +1833,64 @@ function openModal(idx) {
     </div>
   `;
 
-  document.getElementById('modal-criteria-box').innerHTML = `
+      document.getElementById('modal-criteria-box').innerHTML = `
     <strong>Critério de Apuração:</strong><br>${kpi.criterio}
   `;
 
-  document.getElementById('detail-modal').classList.add('open');
-}
+      document.getElementById('detail-modal').classList.add('open');
+    }
 
-function closeModal() {
-  document.getElementById('detail-modal').classList.remove('open');
-}
+    function closeModal() {
+      document.getElementById('detail-modal').classList.remove('open');
+    }
 
-function closeModalOnOverlay(e) {
-  if (e.target === document.getElementById('detail-modal')) closeModal();
-}
+    function closeModalOnOverlay(e) {
+      if (e.target === document.getElementById('detail-modal')) closeModal();
+    }
 
-// ============================================================
-//  VIEW SWITCHING
-// ============================================================
-function switchView(view, navEl) {
-  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-  document.querySelectorAll('.sidebar-nav-item').forEach(n => n.classList.remove('active'));
+    // ============================================================
+    //  VIEW SWITCHING
+    // ============================================================
+    function switchView(view, navEl) {
+      document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+      document.querySelectorAll('.sidebar-nav-item').forEach(n => n.classList.remove('active'));
 
-  document.getElementById('view-' + view).classList.add('active');
-  navEl.classList.add('active');
+      document.getElementById('view-' + view).classList.add('active');
+      navEl.classList.add('active');
 
-  if (view === 'kpis')          renderKpiTable();
-  if (view === 'colaboradores') renderCollabView();
-  if (view === 'acumulado')     renderAcumulado();
-}
+      if (view === 'kpis') renderKpiTable();
+      if (view === 'colaboradores') renderCollabView();
+      if (view === 'acumulado') renderAcumulado();
+    }
 
-// ============================================================
-//  BOOT
-// ============================================================
-window.addEventListener('load', () => {
-  // If running inside Apps Script, the loader bar takes 1.8s
-  loadData();
-});
+    // ============================================================
+    //  BOOT
+    // ============================================================
+    window.addEventListener('load', () => {
+      applyTheme(getStoredTheme());
+      // If running inside Apps Script, the loader bar takes 1.8s
+      loadData();
+    });
 
-// ============================================================
-//  APPS SCRIPT SERVER FUNCTIONS REFERENCE
-//  Implemente no seu .gs:
-//
-//  function getDashboardData() {
-//    var ss = SpreadsheetApp.getActiveSpreadsheet();
-//    // Ler aba DESCRIÇÃO para kpis[]
-//    // Ler abas 1–12 para monthly{}
-//    // Montar e retornar objeto JSON
-//    return JSON.stringify({ kpis, monthly });
-//  }
-//
-//  function doGet() {
-//    return HtmlService.createHtmlOutputFromFile('dashboard_logistica_nortetech')
-//      .setTitle('Dashboard KPI Logística')
-//      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
-//  }
-// ============================================================
-</script>
+    // ============================================================
+    //  APPS SCRIPT SERVER FUNCTIONS REFERENCE
+    //  Implemente no seu .gs:
+    //
+    //  function getDashboardData() {
+    //    var ss = SpreadsheetApp.getActiveSpreadsheet();
+    //    // Ler aba DESCRIÇÃO para kpis[]
+    //    // Ler abas 1–12 para monthly{}
+    //    // Montar e retornar objeto JSON
+    //    return JSON.stringify({ kpis, monthly });
+    //  }
+    //
+    //  function doGet() {
+    //    return HtmlService.createHtmlOutputFromFile('dashboard_logistica_nortetech')
+    //      .setTitle('Dashboard KPI Logística')
+    //      .setXFrameOptionsMode(HtmlService.XFrameOptionsMode.ALLOWALL);
+    //  }
+    // ============================================================
+  </script>
 </body>
+
 </html>
