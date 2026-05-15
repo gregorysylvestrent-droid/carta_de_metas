@@ -59,6 +59,36 @@ var CONFIG = {
 
 
 // ============================================================
+//  isHeaderRow_  (privado)
+//  Evita que cabeçalhos repetidos nas abas sejam tratados como KPI
+// ============================================================
+function isHeaderRow_(row) {
+  var c = CONFIG.COLS;
+  var cod = normalizeHeaderCell_(row[c.COD_IND]);
+  var nome = normalizeHeaderCell_(row[c.NOME]);
+  var indicador = normalizeHeaderCell_(row[c.INDICADOR]);
+  var matricula = normalizeHeaderCell_(row[c.MATRICULA]);
+
+  return cod === 'cod indicador' ||
+    cod === 'codigo indicador' ||
+    indicador === 'indicador' ||
+    nome === 'nome completo' ||
+    matricula === 'matricula';
+}
+
+function normalizeHeaderCell_(value) {
+  return String(value || '')
+    .trim()
+    .toLowerCase()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/[º°]/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+
+// ============================================================
 //  doGet — abre o dashboard como WebApp (deploy como web app)
 // ============================================================
 function doGet() {
@@ -146,7 +176,8 @@ function lerKpisDescricao_(ss) {
   var kpis = [];
 
   linhas.forEach(function (row) {
-    // Ignora linhas vazias ou de totais (sem código de indicador)
+    // Ignora cabeçalhos repetidos, linhas vazias ou de totais
+    if (isHeaderRow_(row)) return;
     if (!row[c.COD_IND] || String(row[c.COD_IND]).trim() === '') return;
     // Ignora linha de soma final (sem nome)
     if (!row[c.NOME] || String(row[c.NOME]).trim() === '') return;
@@ -210,6 +241,8 @@ function lerResultadosMensais_(ss, kpis) {
     var mapaCodigos = {};
 
     linhas.forEach(function (row) {
+      if (isHeaderRow_(row)) return;
+
       var cod = String(row[c.COD_IND] || '').trim();
 
       if (!cod) return;

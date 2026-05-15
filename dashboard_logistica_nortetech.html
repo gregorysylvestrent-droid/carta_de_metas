@@ -36,6 +36,47 @@
       --font-mono: 'JetBrains Mono', monospace;
     }
 
+    body.light-theme {
+      --nt-navy: #f4f7fb;
+      --nt-navy-mid: #ffffff;
+      --nt-navy-card: #ffffff;
+      --nt-blue: #1a56db;
+      --nt-blue-light: #2563eb;
+      --nt-orange: #b89600;
+      --nt-orange-dim: #c2410c;
+      --nt-teal: #0f766e;
+      --nt-green: #15803d;
+      --nt-red: #dc2626;
+      --nt-yellow: #ca8a04;
+      --nt-white: #102033;
+      --nt-muted: #5f7089;
+      --nt-border: rgba(26, 86, 219, 0.16);
+      --nt-glow: rgba(26, 86, 219, 0.12);
+    }
+
+    body.light-theme thead th,
+    body.light-theme .month-tab {
+      background: rgba(26, 86, 219, 0.06);
+    }
+
+    body.light-theme tbody tr {
+      border-bottom-color: rgba(10, 22, 40, 0.08);
+    }
+
+    body.light-theme tbody tr:hover,
+    body.light-theme .sidebar-nav-item:hover {
+      background: rgba(26, 86, 219, 0.08);
+    }
+
+    body.light-theme .progress-bar-bg,
+    body.light-theme .ec-bar-wrap {
+      background: rgba(10, 22, 40, 0.1);
+    }
+
+    body.light-theme .modal-criteria {
+      background: rgba(26, 86, 219, 0.04);
+    }
+
     *,
     *::before,
     *::after {
@@ -178,7 +219,8 @@
       font-family: var(--font-mono);
     }
 
-    .header-refresh-btn {
+    .header-refresh-btn,
+    .header-theme-btn {
       background: none;
       border: 1px solid var(--nt-border);
       color: var(--nt-muted);
@@ -194,14 +236,21 @@
       transition: all 0.2s;
     }
 
-    .header-refresh-btn:hover {
+    .header-refresh-btn:hover,
+    .header-theme-btn:hover {
       background: rgba(26, 86, 219, 0.15);
       color: var(--nt-white);
       border-color: var(--nt-blue-light);
     }
 
-    .refresh-icon {
+    .refresh-icon,
+    .theme-icon {
       font-size: 0.9rem;
+    }
+
+    .header-theme-btn {
+      min-width: 138px;
+      justify-content: center;
     }
 
     /* ---- LAYOUT ---- */
@@ -479,6 +528,141 @@
 
     .filter-select:focus {
       border-color: var(--nt-blue-light);
+    }
+
+    .employee-filter {
+      position: relative;
+      min-width: 280px;
+    }
+
+    .employee-filter-toggle {
+      width: 100%;
+      background: var(--nt-navy-card);
+      border: 1px solid var(--nt-border);
+      color: var(--nt-white);
+      font-family: var(--font-main);
+      font-size: 0.8rem;
+      padding: 7px 12px;
+      border-radius: 7px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      min-height: 35px;
+    }
+
+    .employee-filter-toggle:hover,
+    .employee-filter.open .employee-filter-toggle {
+      border-color: var(--nt-blue-light);
+      background: rgba(26, 86, 219, 0.12);
+    }
+
+    .employee-filter-label {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .employee-filter-caret {
+      color: var(--nt-muted);
+      font-size: 0.75rem;
+    }
+
+    .employee-filter-panel {
+      display: none;
+      position: absolute;
+      z-index: 220;
+      top: calc(100% + 6px);
+      left: 0;
+      width: min(360px, 90vw);
+      background: var(--nt-navy-card);
+      border: 1px solid var(--nt-border);
+      border-radius: var(--nt-radius);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.28);
+      padding: 10px;
+    }
+
+    .employee-filter.open .employee-filter-panel {
+      display: block;
+    }
+
+    .employee-filter-search {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--nt-border);
+      color: var(--nt-white);
+      font-family: var(--font-main);
+      font-size: 0.78rem;
+      padding: 8px 10px;
+      border-radius: 7px;
+      outline: none;
+      margin-bottom: 8px;
+    }
+
+    .employee-filter-search:focus {
+      border-color: var(--nt-blue-light);
+    }
+
+    .employee-filter-actions {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .employee-filter-action {
+      background: rgba(26, 86, 219, 0.12);
+      border: 1px solid var(--nt-border);
+      color: var(--nt-blue-light);
+      border-radius: 6px;
+      padding: 4px 8px;
+      cursor: pointer;
+      font-family: var(--font-main);
+      font-size: 0.68rem;
+      font-weight: 600;
+    }
+
+    .employee-filter-options {
+      max-height: 230px;
+      overflow-y: auto;
+      display: grid;
+      gap: 4px;
+    }
+
+    .employee-filter-option {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 7px 8px;
+      border-radius: 7px;
+      color: var(--nt-white);
+      cursor: pointer;
+      font-size: 0.75rem;
+      line-height: 1.25;
+    }
+
+    .employee-filter-option:hover {
+      background: rgba(26, 86, 219, 0.1);
+    }
+
+    .employee-filter-option input {
+      margin-top: 2px;
+      accent-color: var(--nt-blue);
+    }
+
+    .employee-filter-option small {
+      display: block;
+      color: var(--nt-muted);
+      font-family: var(--font-mono);
+      font-size: 0.62rem;
+      margin-top: 2px;
+    }
+
+    .employee-filter-empty {
+      color: var(--nt-muted);
+      font-size: 0.75rem;
+      padding: 18px 8px;
+      text-align: center;
     }
 
     /* ---- KPI TABLE ---- */
@@ -990,6 +1174,17 @@
 </head>
 
 <body>
+  <script>
+    (function () {
+      try {
+        if (localStorage.getItem('nt-dashboard-theme') === 'light') {
+          document.body.classList.add('light-theme');
+        }
+      } catch (e) {
+        // Mantém o tema escuro padrão se o armazenamento local estiver indisponível.
+      }
+    })();
+  </script>
 
   <!-- LOADING -->
   <div id="loading-screen">
@@ -1011,6 +1206,9 @@
     </div>
     <div class="header-right">
       <div class="header-period-badge" id="header-period">2026</div>
+      <button class="header-theme-btn" id="theme-toggle" type="button" onclick="toggleTheme()" aria-pressed="false">
+        <span class="theme-icon" id="theme-icon">☾</span> <span id="theme-label">Modo escuro</span>
+      </button>
       <button class="header-refresh-btn" onclick="loadData()">
         <span class="refresh-icon">↻</span> Atualizar
       </button>
@@ -1060,6 +1258,11 @@
 
         <div class="month-tabs" id="month-tabs-dashboard"></div>
 
+        <div class="filter-bar">
+          <span class="filter-label">Colaboradores:</span>
+          <div class="employee-filter" id="dash-employee-filter" data-render="renderDashboard"></div>
+        </div>
+
         <div class="summary-grid" id="summary-cards"></div>
 
         <div class="table-wrap">
@@ -1099,10 +1302,8 @@
         <div class="filter-bar">
           <span class="filter-label">Mês:</span>
           <select class="filter-select" id="kpi-month-select" onchange="renderKpiTable()"></select>
-          <span class="filter-label" style="margin-left:10px">Colaborador:</span>
-          <select class="filter-select" id="kpi-employee-select" onchange="renderKpiTable()">
-            <option value="">Todos</option>
-          </select>
+          <span class="filter-label" style="margin-left:10px">Colaboradores:</span>
+          <div class="employee-filter" id="kpi-employee-filter" data-render="renderKpiTable"></div>
         </div>
         <div class="table-wrap">
           <div class="table-header-bar">
@@ -1155,10 +1356,8 @@
           </div>
         </div>
         <div class="filter-bar">
-          <span class="filter-label">Colaborador:</span>
-          <select class="filter-select" id="acum-employee-select" onchange="renderAcumulado()">
-            <option value="">Todos</option>
-          </select>
+          <span class="filter-label">Colaboradores:</span>
+          <div class="employee-filter" id="acum-employee-filter" data-render="renderAcumulado"></div>
         </div>
         <div class="acum-grid" id="acum-grid"></div>
       </div>
@@ -1196,6 +1395,46 @@
       employees: [],   // lista única de colaboradores
       currentMonth: '1'
     };
+
+    const THEME_STORAGE_KEY = 'nt-dashboard-theme';
+
+    function getStoredTheme() {
+      try {
+        return localStorage.getItem(THEME_STORAGE_KEY) || 'dark';
+      } catch (e) {
+        return 'dark';
+      }
+    }
+
+    function setStoredTheme(theme) {
+      try {
+        localStorage.setItem(THEME_STORAGE_KEY, theme);
+      } catch (e) {
+        // Ignora quando o navegador bloqueia localStorage.
+      }
+    }
+
+    function applyTheme(theme) {
+      const isLight = theme === 'light';
+      document.body.classList.toggle('light-theme', isLight);
+
+      const toggle = document.getElementById('theme-toggle');
+      const icon = document.getElementById('theme-icon');
+      const label = document.getElementById('theme-label');
+
+      if (toggle) {
+        toggle.setAttribute('aria-pressed', String(isLight));
+        toggle.title = isLight ? 'Alternar para modo escuro' : 'Alternar para modo claro';
+      }
+      if (icon) icon.textContent = isLight ? '☀' : '☾';
+      if (label) label.textContent = isLight ? 'Modo claro' : 'Modo escuro';
+    }
+
+    function toggleTheme() {
+      const nextTheme = document.body.classList.contains('light-theme') ? 'dark' : 'light';
+      setStoredTheme(nextTheme);
+      applyTheme(nextTheme);
+    }
 
     // ============================================================
     //  APPS SCRIPT INTEGRATION
@@ -1262,9 +1501,12 @@
       // Extract unique employees
       const empMap = {};
       G.kpis.forEach(k => {
-        if (!empMap[k.matricula]) empMap[k.matricula] = k.nome;
+        const id = String(k.matricula || '').trim();
+        if (id && !empMap[id]) empMap[id] = k.nome;
       });
-      G.employees = Object.entries(empMap).map(([id, nome]) => ({ id, nome }));
+      G.employees = Object.entries(empMap)
+        .map(([id, nome]) => ({ id, nome }))
+        .sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
 
       // Determine current month (first month with real data)
       for (let i = 0; i < G.monthKeys.length; i++) {
@@ -1286,6 +1528,30 @@
       const arr = G.monthly[monthKey] || [];
       const val = arr[idx];
       return (val === null || val === undefined) ? null : Number(val);
+    }
+
+    function getAnnualKpiValue(kpi, idx) {
+      const values = G.monthKeys
+        .map(mk => getKpiValue(mk, idx))
+        .filter(v => v !== null && !Number.isNaN(v));
+
+      if (!values.length) return null;
+
+      if (kpi.tipo === 'PORCENTAGEM' || kpi.tipo === 'PORCENTAGEM (INT)') {
+        return values.reduce((sum, value) => sum + value, 0) / values.length;
+      }
+
+      return values.reduce((sum, value) => sum + value, 0);
+    }
+
+    function getPeriodKpiValue(periodKey, kpi, idx) {
+      return periodKey === 'annual' ? getAnnualKpiValue(kpi, idx) : getKpiValue(periodKey, idx);
+    }
+
+    function periodLabel(periodKey) {
+      return periodKey === 'annual'
+        ? 'Acumulado anual'
+        : G.months[parseInt(periodKey, 10) - 1];
     }
 
     function calcProgress(kpi, value) {
@@ -1326,6 +1592,142 @@
 
     function formatMeta(kpi) {
       return formatValue(kpi, kpi.meta);
+    }
+
+    function employeeMatches(kpi, employeeIds) {
+      const selectedIds = Array.isArray(employeeIds)
+        ? employeeIds.map(id => String(id).trim()).filter(Boolean)
+        : String(employeeIds || '').split(',').map(id => id.trim()).filter(Boolean);
+
+      if (!selectedIds.length) return true;
+      return selectedIds.includes(String(kpi.matricula || '').trim());
+    }
+
+    function getSelectedEmployees(filterId) {
+      const filter = document.getElementById(filterId);
+      if (!filter) return [];
+      return Array.from(filter.querySelectorAll('.employee-filter-checkbox:checked')).map(cb => cb.value);
+    }
+
+    function employeeFilterChanged(filterId) {
+      updateEmployeeFilterLabel(filterId);
+      const renderName = document.getElementById(filterId)?.dataset.render;
+      if (renderName && typeof window[renderName] === 'function') window[renderName]();
+    }
+
+    function toggleEmployeeFilter(filterId) {
+      const filter = document.getElementById(filterId);
+      if (!filter) return;
+
+      const shouldOpen = !filter.classList.contains('open');
+      document.querySelectorAll('.employee-filter.open').forEach(el => {
+        if (el.id !== filterId) el.classList.remove('open');
+      });
+
+      filter.classList.toggle('open', shouldOpen);
+      if (shouldOpen) {
+        const search = filter.querySelector('.employee-filter-search');
+        if (search) {
+          search.focus();
+          search.select();
+        }
+      }
+    }
+
+    function filterEmployeeOptions(filterId) {
+      const filter = document.getElementById(filterId);
+      if (!filter) return;
+
+      const term = normalizeText(filter.querySelector('.employee-filter-search')?.value || '');
+      let visible = 0;
+
+      filter.querySelectorAll('.employee-filter-option').forEach(option => {
+        const matches = normalizeText(option.dataset.search || '').includes(term);
+        option.style.display = matches ? 'flex' : 'none';
+        if (matches) visible++;
+      });
+
+      const empty = filter.querySelector('.employee-filter-empty');
+      if (empty) empty.style.display = visible ? 'none' : 'block';
+    }
+
+    function setEmployeeFilterSelection(filterId, checked) {
+      const filter = document.getElementById(filterId);
+      if (!filter) return;
+
+      filter.querySelectorAll('.employee-filter-option').forEach(option => {
+        if (option.style.display !== 'none') {
+          const checkbox = option.querySelector('.employee-filter-checkbox');
+          if (checkbox) checkbox.checked = checked;
+        }
+      });
+
+      employeeFilterChanged(filterId);
+    }
+
+    function updateEmployeeFilterLabel(filterId) {
+      const filter = document.getElementById(filterId);
+      if (!filter) return;
+
+      const selected = getSelectedEmployees(filterId);
+      const label = filter.querySelector('.employee-filter-label');
+      if (!label) return;
+
+      if (!selected.length) {
+        label.textContent = 'Todos os colaboradores';
+      } else if (selected.length === 1) {
+        const emp = G.employees.find(e => e.id === selected[0]);
+        label.textContent = emp ? emp.nome : '1 colaborador';
+      } else {
+        label.textContent = `${selected.length} colaboradores selecionados`;
+      }
+    }
+
+    function renderEmployeeFilter(filterId) {
+      const filter = document.getElementById(filterId);
+      if (!filter) return;
+
+      filter.innerHTML = `
+        <button class="employee-filter-toggle" type="button" onclick="toggleEmployeeFilter('${filterId}')">
+          <span class="employee-filter-label">Todos os colaboradores</span>
+          <span class="employee-filter-caret">▾</span>
+        </button>
+        <div class="employee-filter-panel">
+          <input class="employee-filter-search" type="search" placeholder="Pesquisar colaborador..." oninput="filterEmployeeOptions('${filterId}')">
+          <div class="employee-filter-actions">
+            <button class="employee-filter-action" type="button" onclick="setEmployeeFilterSelection('${filterId}', true)">Marcar visíveis</button>
+            <button class="employee-filter-action" type="button" onclick="setEmployeeFilterSelection('${filterId}', false)">Limpar visíveis</button>
+          </div>
+          <div class="employee-filter-options">
+            ${G.employees.map(e => `
+              <label class="employee-filter-option" data-search="${escapeAttr(`${e.nome} ${e.id}`)}">
+                <input class="employee-filter-checkbox" type="checkbox" value="${escapeAttr(e.id)}" onchange="employeeFilterChanged('${filterId}')">
+                <span>${escapeHTML(e.nome)}<small>Mat. ${escapeHTML(e.id)}</small></span>
+              </label>
+            `).join('')}
+            <div class="employee-filter-empty" style="display:none">Nenhum colaborador encontrado</div>
+          </div>
+        </div>
+      `;
+
+      updateEmployeeFilterLabel(filterId);
+    }
+
+    function normalizeText(value) {
+      return String(value || '')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .toLowerCase();
+    }
+
+    function escapeHTML(value) {
+      return String(value || '').replace(/[&<>'"]/g, ch => ({
+        '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+      }[ch]));
+    }
+
+    function escapeAttr(value) {
+      return escapeHTML(value).replace(/`/g, '&#96;');
     }
 
     // ============================================================
@@ -1379,6 +1781,14 @@
         const sel = document.getElementById(id);
         if (!sel) return;
         sel.innerHTML = '';
+
+        if (id === 'kpi-month-select') {
+          const annualOpt = document.createElement('option');
+          annualOpt.value = 'annual';
+          annualOpt.textContent = 'Acumulado anual';
+          sel.appendChild(annualOpt);
+        }
+
         G.monthKeys.forEach((mk, i) => {
           const opt = document.createElement('option');
           opt.value = mk;
@@ -1388,19 +1798,7 @@
         });
       });
 
-      // Employee selects
-      ['kpi-employee-select', 'acum-employee-select'].forEach(id => {
-        const sel = document.getElementById(id);
-        if (!sel) return;
-        // Keep "Todos" first
-        sel.innerHTML = '<option value="">Todos os colaboradores</option>';
-        G.employees.forEach(e => {
-          const opt = document.createElement('option');
-          opt.value = e.id;
-          opt.textContent = e.nome + ' (' + e.id + ')';
-          sel.appendChild(opt);
-        });
-      });
+      ['dash-employee-filter', 'kpi-employee-filter', 'acum-employee-filter'].forEach(renderEmployeeFilter);
     }
 
     // ============================================================
@@ -1436,12 +1834,14 @@
 
       buildMonthTabs('month-tabs-dashboard', renderDashboard);
 
+      const selectedEmployees = getSelectedEmployees('dash-employee-filter');
+
       const rows = G.kpis.map((kpi, i) => {
         const val = getKpiValue(monthKey, i);
         const prog = calcProgress(kpi, val);
         const status = getStatus(prog, val);
-        return { kpi, val, prog, status };
-      });
+        return { kpi, val, prog, status, idx: i };
+      }).filter(r => employeeMatches(r.kpi, selectedEmployees));
 
       // Summary cards
       const total = rows.length;
@@ -1449,8 +1849,9 @@
       const atRisk = rows.filter(r => r.status === 'at-risk').length;
       const offTrack = rows.filter(r => r.status === 'off-track').length;
       const noData = rows.filter(r => r.status === 'no-data').length;
-      const avgProg = rows.filter(r => r.prog !== null).reduce((s, r) => s + r.prog, 0) /
-        Math.max(rows.filter(r => r.prog !== null).length, 1);
+      const validRows = rows.filter(r => r.prog !== null);
+      const avgProg = validRows.reduce((s, r) => s + r.prog, 0) / Math.max(validRows.length, 1);
+      const onTrackPct = total > 0 ? ((onTrack / total) * 100).toFixed(0) : '0';
 
       document.getElementById('summary-cards').innerHTML = `
     <div class="summary-card accent-teal">
@@ -1462,7 +1863,7 @@
     <div class="summary-card accent-green">
       <div class="sc-label">No Prazo</div>
       <div class="sc-value" style="color:var(--nt-green)">${onTrack}</div>
-      <div class="sc-meta">${((onTrack / total) * 100).toFixed(0)}% do total</div>
+      <div class="sc-meta">${onTrackPct}% do total</div>
       <span class="sc-icon">✓</span>
     </div>
     <div class="summary-card accent-yellow">
@@ -1487,8 +1888,8 @@
 
       // Table
       const tbody = document.getElementById('dashboard-table-body');
-      tbody.innerHTML = rows.map((r, i) => `
-    <tr onclick="openModal(${i})" style="cursor:pointer">
+      tbody.innerHTML = rows.map(r => `
+    <tr onclick="openModal(${r.idx})" style="cursor:pointer">
       <td class="mono" style="color:var(--nt-orange);font-size:0.7rem">${r.kpi.codInd}</td>
       <td style="max-width:220px">
         <div style="font-weight:500;font-size:0.78rem;line-height:1.3">${r.kpi.indicador}</div>
@@ -1503,24 +1904,26 @@
     </tr>
   `).join('');
 
-      document.getElementById('table-count-dash').textContent = `${total} indicadores`;
-      document.getElementById('badge-kpis').textContent = total;
+      document.getElementById('table-count-dash').textContent = selectedEmployees.length
+        ? `${total} indicadores filtrados`
+        : `${total} indicadores`;
+      document.getElementById('badge-kpis').textContent = G.kpis.length;
     }
 
     // ============================================================
     //  KPI TABLE VIEW
     // ============================================================
     function renderKpiTable() {
-      const monthKey = document.getElementById('kpi-month-select')?.value || G.currentMonth;
-      const empFilter = document.getElementById('kpi-employee-select')?.value || '';
+      const periodKey = document.getElementById('kpi-month-select')?.value || G.currentMonth;
+      const selectedEmployees = getSelectedEmployees('kpi-employee-filter');
 
       let rows = G.kpis.map((kpi, i) => {
-        const val = getKpiValue(monthKey, i);
+        const val = getPeriodKpiValue(periodKey, kpi, i);
         const prog = calcProgress(kpi, val);
         const status = getStatus(prog, val);
         return { kpi, val, prog, status, idx: i };
       });
-      if (empFilter) rows = rows.filter(r => r.kpi.matricula.includes(empFilter));
+      if (selectedEmployees.length) rows = rows.filter(r => employeeMatches(r.kpi, selectedEmployees));
 
       const tbody = document.getElementById('kpi-table-body');
       tbody.innerHTML = rows.map(r => `
@@ -1537,7 +1940,7 @@
       <td class="progress-cell">${progressBarHTML(r.prog, r.status)}</td>
       <td>${statusBadgeHTML(r.status)}</td>
       <td>
-        <button onclick="openModal(${r.idx})" style="background:none;border:1px solid var(--nt-border);color:var(--nt-muted);padding:3px 10px;border-radius:5px;font-size:0.7rem;cursor:pointer;font-family:var(--font-main)" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--nt-muted)'">
+        <button onclick="openModal(${r.idx}, '${periodKey}')" style="background:none;border:1px solid var(--nt-border);color:var(--nt-muted);padding:3px 10px;border-radius:5px;font-size:0.7rem;cursor:pointer;font-family:var(--font-main)" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--nt-muted)'">
           Ver
         </button>
       </td>
@@ -1557,7 +1960,7 @@
       grid.innerHTML = '';
 
       G.employees.forEach(emp => {
-        const empKpis = G.kpis.map((kpi, i) => ({ kpi, i })).filter(x => x.kpi.matricula.includes(emp.id));
+        const empKpis = G.kpis.map((kpi, i) => ({ kpi, i })).filter(x => employeeMatches(x.kpi, [emp.id]));
         if (!empKpis.length) return;
 
         const scores = empKpis.map(({ kpi, i }) => {
@@ -1619,15 +2022,18 @@
     //  ACUMULADO VIEW
     // ============================================================
     function renderAcumulado() {
-      const empFilter = document.getElementById('acum-employee-select')?.value || '';
+      const selectedEmployees = getSelectedEmployees('acum-employee-filter');
       let kpis = G.kpis;
-      if (empFilter) kpis = kpis.filter(k => k.matricula.includes(empFilter));
+      if (selectedEmployees.length) kpis = kpis.filter(k => employeeMatches(k, selectedEmployees));
 
       const monthShorts = G.months.map(m => m.slice(0, 3));
       const grid = document.getElementById('acum-grid');
 
       grid.innerHTML = kpis.map((kpi, localIdx) => {
         const globalIdx = G.kpis.indexOf(kpi);
+        const annualVal = getAnnualKpiValue(kpi, globalIdx);
+        const annualProg = calcProgress(kpi, annualVal);
+        const annualStatus = getStatus(annualProg, annualVal);
         const monthCells = G.monthKeys.map((mk, mi) => {
           const val = getKpiValue(mk, globalIdx);
           const prog = calcProgress(kpi, val);
@@ -1653,6 +2059,10 @@
           <span>Peso: <strong style="color:var(--nt-white)">${kpi.peso}%</strong></span>
           <span>Direção: <strong style="color:var(--nt-white)">${kpi.melhor}</strong></span>
         </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;background:rgba(26,86,219,0.08);border:1px solid var(--nt-border);border-radius:8px;padding:8px 10px;margin-bottom:12px">
+          <span style="font-size:0.65rem;color:var(--nt-muted);text-transform:uppercase;letter-spacing:0.08em;font-weight:700">Resultado acumulado anual</span>
+          <span style="font-size:0.9rem;font-family:var(--font-mono);font-weight:800;color:var(--nt-white)">${formatValue(kpi, annualVal)} · ${statusBadgeHTML(annualStatus)}</span>
+        </div>
         <div class="acum-months">${monthCells}</div>
       </div>`;
       }).join('');
@@ -1661,10 +2071,10 @@
     // ============================================================
     //  MODAL DETALHES
     // ============================================================
-    function openModal(idx) {
+    function openModal(idx, periodKey) {
       const kpi = G.kpis[idx];
-      const mk = G.currentMonth;
-      const val = getKpiValue(mk, idx);
+      const mk = periodKey || G.currentMonth;
+      const val = getPeriodKpiValue(mk, kpi, idx);
       const prog = calcProgress(kpi, val);
       const status = getStatus(prog, val);
 
@@ -1690,7 +2100,7 @@
       <div class="modal-detail-value" style="font-family:var(--font-mono);font-weight:700">${formatMeta(kpi)}</div>
     </div>
     <div class="modal-detail-item">
-      <div class="modal-detail-label">Realizado (${G.months[parseInt(mk) - 1]})</div>
+      <div class="modal-detail-label">Realizado (${periodLabel(mk)})</div>
       <div class="modal-detail-value" style="font-family:var(--font-mono);font-weight:700;color:${colorMap[status]}">${formatValue(kpi, val)}</div>
     </div>
     <div class="modal-detail-item">
@@ -1746,7 +2156,14 @@
     // ============================================================
     //  BOOT
     // ============================================================
+    document.addEventListener('click', (event) => {
+      if (!event.target.closest('.employee-filter')) {
+        document.querySelectorAll('.employee-filter.open').forEach(filter => filter.classList.remove('open'));
+      }
+    });
+
     window.addEventListener('load', () => {
+      applyTheme(getStoredTheme());
       // If running inside Apps Script, the loader bar takes 1.8s
       loadData();
     });
